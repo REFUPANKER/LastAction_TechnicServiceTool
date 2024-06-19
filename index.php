@@ -65,6 +65,9 @@
             <div class="collapse w-100 navbar-collapse justify-content-md-around" id="navbarNav">
                 <ul class="navbar-nav mb-2 mb-md-0">
                     <li class="nav-item">
+                        <a class="nav-link" href="#lastActions">Last Actions</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="#services">Services</a>
                     </li>
                     <li class="nav-item">
@@ -98,13 +101,6 @@
                     </div>
                 </div>
                 <div class="carousel-item">
-                    <img src="https://img.freepik.com/free-vector/computer-technology-isometric-icon-server-room-digital-device-set-element-design-pc-laptop_39422-1026.jpg" class="carousel-image" alt="Hosting service">
-                    <div class="carousel-caption custom-carousel-caption">
-                        <h5 class="carousel-caption-title">Hosting Service</h5>
-                        <p class="carousel-caption-text">Host your projects in our servers</p>
-                    </div>
-                </div>
-                <div class="carousel-item">
                     <img src="https://images.pexels.com/photos/7639373/pexels-photo-7639373.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" class="carousel-image" alt="Technical Support">
                     <div class="carousel-caption custom-carousel-caption">
                         <h5 class="carousel-caption-title">Technical Support</h5>
@@ -132,7 +128,7 @@
 
 
     <!-- Last Actions -->
-    <div class="container my-5">
+    <div class="container my-5" id="lastActions">
         <h2 class="text-center mb-4">Last Actions</h2>
         <div class="scrollable">
             <div class="card mb-3">
@@ -155,7 +151,7 @@
 
 
     <!-- Services -->
-    <div class="container my-5">
+    <div class="container my-5" id="services">
         <h2 class="text-center mb-4">Services</h2>
         <div class="row row-cols-1 row-cols-md-5 g-3 service-container">
             <div class="col">
