@@ -10,16 +10,184 @@ if (isset($_GET["logout"])) {
 }
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Last Action | User</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="../resources/styles/colorics.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #343a40;
+            color: #fff;
+        }
+
+        .sidebar {
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            background-color: #212529;
+            padding-top: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar .user-info {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .sidebar .user-info img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar .user-info h5 {
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar .user-info .btn-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .sidebar .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .sidebar a {
+            color: #adb5bd;
+            text-decoration: none;
+            padding: 10px 20px;
+            display: block;
+            width: 100%;
+            text-align: left;
+        }
+
+        .sidebar a:hover {
+            background-color: #495057;
+        }
+
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+
+        .dropdown-menu {
+            background-color: #212529;
+            border: none;
+        }
+
+        .dropdown-item {
+            color: #adb5bd;
+        }
+
+        .dropdown-item:hover {
+            background-color: #495057;
+        }
+
+        .menu-toggle {
+            display: none;
+            background-color: #212529;
+            border: none;
+            color: #fff;
+            padding: 10px;
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            z-index: 1040;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                width: 100%;
+                position: fixed;
+                z-index: 1030;
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .content {
+                margin-left: 0;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+        }
+    </style>
 </head>
-<body class="m-0 bgc-black text-white">
-    <a href="?logout=1">Logout</a>
+
+<body>
+    <button class="menu-toggle" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <div class="sidebar" id="sidebar">
+        <div class="user-info">
+            <img src="https://via.placeholder.com/80" alt="Profile Picture">
+            <h5>John Doe</h5>
+            <div class="btn-group">
+                <button class="btn btn-secondary btn-sm">
+                    <i class="fas fa-cog"></i>
+                    <span>Profile</span>
+                </button>
+                <a href="?logout=1" class="btn btn-danger btn-sm">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </div>
+        <a href="."><i class="fas fa-home"></i> Home</a>
+        <a href="?p=news.php"><i class="fas fa-newspaper"></i> News</a>
+        <a href="?p=yourstore.php"><i class="fas fa-store"></i> Your Store</a>
+        <a href="?p=addcustomer.php"><i class="fas fa-user-plus"></i> Add Customer</a>
+        <div class="dropdown">
+            <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fas fa-cogs"></i> Actions
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <li><a class="dropdown-item" href="?a=New"><i class="fas fa-plus"></i> New</a></li>
+                <li><a class="dropdown-item" href="?a=Update"><i class="fas fa-edit"></i> Update</a></li>
+                <li><a class="dropdown-item" href="?a=Manage"><i class="fas fa-tasks"></i> Manage</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="container">
+            <?php
+            if (isset($_GET["p"]) && file_exists($_GET["p"])) {
+                include_once($_GET["p"]);
+            } else { ?>
+                <h1>Dashboard</h1>
+                <p>This is the main content area. Place your content here.</p>
+            <?php }
+            ?>
+        </div>
+    </div>
+    <script>
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('show');
+        }
+    </script>
 </body>
+
 </html>
