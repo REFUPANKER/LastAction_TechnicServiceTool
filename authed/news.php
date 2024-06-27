@@ -1,59 +1,60 @@
 <style>
-    .faq {
+    .news {
         background-color: #343a40;
         color: white;
         font-family: Arial, sans-serif;
         margin: 1vw;
     }
 
-    .faq .faq-container {
+    .news .news-container {
         min-height: 60vh;
         max-height: 80vh;
         overflow-y: auto;
-        padding:0 3vw;
+        padding: 0 3vw;
     }
 
-    .faq .faq-title {
+    .news .news-title {
         text-align: center;
-        
+
     }
 
-    .faq .faq-item {
+    .news .news-item {
         margin-bottom: 10px;
-    }
-
-    .faq .form-container {
-        
-        background-color: #495057;
-        border-radius: 10px;
-        min-width: 50%;
-        margin-left: auto;
-        margin-right: auto;
     }
 </style>
 
 
-<div class="faq d-flex flex-column w-auto h-100 ">
-    <h2 class="faq-title">News</h2>
-    <div class="faq-container">
-        <div class="accordion" id="faqAccordion">
+<div class="news d-flex flex-column w-auto h-100 ">
+    <h2 class="news-title">News</h2>
+    <div class="news-container">
+        <div class="accordion" id="newsAccordion">
             <?php
-            for ($i = 0; $i < 10; $i++) {
+            $gnews = GetNews();
+            for ($i = 0; $i < count($gnews); $i++) {
             ?>
-                <div class="accordion-item faq-item">
+                <div class="accordion-item news-item">
                     <h2 class="accordion-header" id="heading<?= $i ?>">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<?= $i ?>" aria-expanded="false" aria-controls="collapse<?= $i ?>">
-                            Title <?= $i ?>
+                            <?= $gnews[$i]["title"] ?>
                         </button>
                     </h2>
-                    <div id="collapse<?= $i ?>" class="accordion-collapse collapse" aria-labelledby="heading<?= $i ?>" data-bs-parent="#faqAccordion">
-                        <div class="accordion-body">
-                            Description.MD <?= $i ?>
+                    <div id="collapse<?= $i ?>" class="accordion-collapse collapse" aria-labelledby="heading<?= $i ?>" data-bs-parent="#newsAccordion">
+                        <div class="accordion-body text-break">
+                            <?= $gnews[$i]["content"] ?>
+                            <hr class="mt-1 mb-1">
+                            <h6><?= $gnews[$i]["date"] ?></h6>
                         </div>
                     </div>
                 </div>
             <?php
             }
+            if (count($gnews) < 1) {
+            ?>
+            <div class="alert alert-warning">
+                No news found
+            </div>
+            <?php }
+            unset($gnews);
             ?>
         </div>
     </div>

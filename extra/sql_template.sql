@@ -9,3 +9,40 @@ create table users(
 	active int not null default 1
 );
 
+drop table if exists news;
+create table news(
+	id int primary key AUTO_INCREMENT,
+	title varchar(64),
+	content varchar(512),
+	display int not null default 1,
+	`date` datetime not null default CURRENT_TIMESTAMP
+);
+
+drop table if exists faq;
+create table faq(
+	id int primary key AUTO_INCREMENT,
+	`from` varchar(64),
+	question varchar(64),
+	answer varchar(512),
+	display int not null default 0,
+	`date` datetime not null default CURRENT_TIMESTAMP
+);
+
+drop table if exists stores;
+create table stores(
+	id int primary key AUTO_INCREMENT,
+	token varchar(64) not null default UUID(),
+	logo blob,
+	owner int not null default 0,
+	name varchar(64) not null default "My Store",
+	about varchar(512) not null default "Hello! im owner of this store"
+);
+
+drop table if exists store_carousel;
+create table store_carousel(
+	id int primary key AUTO_INCREMENT,
+	store int,
+	`image` mediumblob,
+	title varchar(64) not null default "Carousel Title",
+	content varchar(512) not null default "Carousel Content"
+);

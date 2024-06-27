@@ -55,10 +55,9 @@ if (isset($_SESSION["user"])) {
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <?php
-                $sent = false;
                 $alertMessage = "";
                 $alertType = "";
-                if (!$sent && isset($_POST["t"])) {
+                if (!isset($_SESSION["user"]) && isset($_POST["t"])) {
                     switch ($_POST["t"]) {
                         case 'login':
                             if (!UserExistsByEmail($_POST["email"])) {
@@ -77,7 +76,6 @@ if (isset($_SESSION["user"])) {
                                 LoginUser($_POST["email"], $_POST["password"]);
                                 $alertMessage = "Successfully logged in (redirecting in 3 sec)";
                                 $alertType = "success";
-                                $sent = true;
                                 header("refresh:3;url=./authed/");
                             }
                             break;
@@ -97,7 +95,6 @@ if (isset($_SESSION["user"])) {
                             RegisterUser($_POST["name"], $_POST["email"], $_POST["password"]);
                             $alertMessage = "Successfully registered (redirecting in 3 sec)";
                             $alertType = "success";
-                            $sent = true;
                             header("refresh:3;url=./authed/");
                             break;
                     }
