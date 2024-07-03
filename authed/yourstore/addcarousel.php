@@ -51,11 +51,11 @@ if ($carouselCount < $maxCarousels) { ?>
         if ($canAddCarousel) { ?>
             <form method="post" enctype="multipart/form-data" class="d-flex carouselblock align-items-center justify-content-center gap-3 w-100">
                 <div class="d-flex flex-column">
-                    <label tabindex="1" for="pfpslct" class="w-100 m-1 btn btn-dark ">Select Image</label>
+                    <label tabindex="1" for="pfpslct" class="w-100 m-1 btn btn-secondary ">Select Image</label>
                     <input required id="pfpslct" onchange="onProfileImageSelected()" class="d-none w-100" type="file" name="carousel_image" title="select file" accept="image/jpeg, image/png">
                     <input tabindex="2" title="Title (required)" placeholder="Title" class="form-control m-1" name="carousel_title" required>
                     <input tabindex="3" title="Content (required)" placeholder="Content" class="form-control m-1" name="carousel_content" required>
-                    <button tabindex="4" class="m-1 w-100 p-1 btn btn-dark" type="submit" name="addcarousel" value="1">Add</button>
+                    <button tabindex="4" class="m-1 w-100 p-1 btn btn-secondary" type="submit" name="addcarousel" value="1">Add</button>
                     <p class="w-100 rounded rounded-3 m-1 text-center"><i>size limit : <?= $sizeLimit . "mb" ?></i></p>
                 </div>
                 <div id="selectedImage" title="Selected image" style="min-width:30vw;aspect-ratio: 1280/720;border:0.2vmax solid white;background-color: rgba(255,255,255,0.3);border-radius: 0.5vmax;background-image:url('https://via.placeholder.com/1280x720');"></div>

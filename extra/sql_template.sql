@@ -32,10 +32,11 @@ drop table if exists stores;
 create table stores(
 	id int primary key AUTO_INCREMENT,
 	token varchar(64) not null default UUID(),
-	logo blob,
+	logo mediumblob,
 	owner int not null default 0,
 	name varchar(64) not null default "My Store",
-	about varchar(512) not null default "Hello! im owner of this store"
+	about varchar(512) not null default "Hello! im owner of this store",
+	open int not null default 1
 );
 
 drop table if exists store_carousel;

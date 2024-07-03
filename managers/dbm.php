@@ -10,7 +10,7 @@ try {
     ob_start();
 
     $inactive = 5 * 60;
-    if (isset($_SESSION['timeout'])) {
+    if (isset($_SESSION["user"]) && isset($_SESSION['timeout'])) {
         $session_life = time() - $_SESSION['timeout'];
         if ($session_life > $inactive) {
             session_unset();
@@ -159,14 +159,52 @@ function AddFAQ($from, $question)
 
 #region Stores
 
+function CreateStore($name, $about, $image = null)
+{
+    if (isset($image)) {
+        $image = file_get_contents($image);
+    }
+    runQuery("insert into stores (owner,name,about,logo) values (?,?,?,?)", [$_SESSION["user"], $name, $about, $image]);
+}
+
+function OpenStore()
+{
+    runQuery("update stores set open=1 where owner=?", [$_SESSION["user"]]);
+}
+
+function CloseStore()
+{
+    runQuery("update stores set open=0 where owner=?", [$_SESSION["user"]]);
+}
+
+
 function GetStoreByUserId($id)
 {
     return runQuery("select * from stores where owner = ?", [$id]);
 }
 
+function GetStoreByToken($token)
+{
+    return runQuery("select * from stores where token = ?", [$token]);
+}
+
+function UpdateStoreAbout($about){
+    runQuery("update stores set about = ? where owner = ?", [$about,$_SESSION["user"]]);
+}
+
+/**
+ * returns link of store preview link if its exists 
+ */
+function StorePreviewLink()
+{
+    return runQuery("select token from stores where owner = ?", [$_SESSION["user"]]);
+}
+
+// Store Carousel
+
 function GetStoreCarousel($storeId)
 {
-    return runQuery("select * from store_carousel where store = ?", [$storeId],single:false);
+    return runQuery("select * from store_carousel where store = ?", [$storeId], single: false);
 }
 
 function GetStoreCarouselCount($storeId)
@@ -182,10 +220,10 @@ function RemoveStoreCarousel($carouselId)
 
 function AddStoreCarousel($storeId, $image, $title, $content)
 {
-    $image=file_get_contents($image);
+    $image = file_get_contents($image);
     runQuery(
         "insert into store_carousel (store,image,title,content) values(?,?,?,?)",
-        [$storeId,$image,$title,$content]
+        [$storeId, $image, $title, $content]
     );
     header("refresh:2");
 }

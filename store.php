@@ -1,12 +1,30 @@
+<?php
+require_once "./managers/dbm.php";
+?>
+
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Last Action</title>
+    <title>Last Action | Store</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <?php
+    if (isset($_GET["t"])) {
+        $store = GetStoreByToken($_GET["t"]);
+        if (isset($store)) {
+            $owner = GetUserById($store["owner"]);
+        } else { ?>
+            <div class="alert alert-warning m-3">No store valid for this token,redirecting to home page (3sec)</div>
+        <?php
+            header("refresh:3;url=./");
+            return;
+        }
+    }
+    ?>
+
     <style>
         .navbar-custom {
             background-color: black;
@@ -50,6 +68,15 @@
             padding: 0.5vw;
             object-fit: contain;
         }
+
+        .home-link img {
+            width: 2vw !important;
+            aspect-ratio: 1;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 100% 100%;
+            filter: invert(1);
+        }
     </style>
 </head>
 
@@ -57,8 +84,9 @@
 
     <!-- Navbar -->
     <nav class="navbar navbar-expand-md navbar-custom">
-        <div class="container-fluid d-flex justify-content-around align-items-center">
-            <a class="navbar-brand" href="#">Last Action</a>
+        <div class="container-fluid d-flex justify-content-around align-items-center gap-2">
+            <a href="./" class="home-link"><img src="https://cdn-icons-png.flaticon.com/512/1946/1946436.png" alt="Home"></a>
+            <a class="navbar-brand" href="#"><?= htmlspecialchars($store["name"]) ?> by <?= htmlspecialchars($owner["name"]) ?></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -90,42 +118,39 @@
 
 
     <!-- Image Carousel -->
-    <div class="d-flex justify-content-center my-5">
-        <div id="carouselExampleControls" class="carousel slide w-75" data-bs-ride="carousel">
-            <div class="carousel-inner rounded rounded-3">
-                <div class="carousel-item active">
-                    <img src="https://img.freepik.com/free-photo/computer-screens-running-programming-code-empty-software-developing-agency-office-computers-parsing-data-algorithms-background-neural-network-servers-cloud-computing-data-room_482257-33353.jpg?t=st=1718452673~exp=1718456273~hmac=5d61ef97b3d2ae75cdf8e080689f37fb15fee9e0d9035bec4774ca0932d730b2&w=740" class="carousel-image" alt="Software support">
-                    <div class="carousel-caption custom-carousel-caption">
-                        <h5 class="carousel-caption-title">Software Support</h5>
-                        <p class="carousel-caption-text">Live support & app development</p>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <img src="https://images.pexels.com/photos/7639373/pexels-photo-7639373.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" class="carousel-image" alt="Technical Support">
-                    <div class="carousel-caption custom-carousel-caption">
-                        <h5 class="carousel-caption-title">Technical Support</h5>
-                        <p class="carousel-caption-text">We are fixing your devices</p>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <img src="https://img.freepik.com/free-vector/software-installation-contract-adjustment-agreement-terms-regulation-program-fix-coworkers-holding-gears-cartoon-character-application-bugs_335657-2095.jpg" class="carousel-image" alt="Customize Your Store">
-                    <div class="carousel-caption custom-carousel-caption">
-                        <h5 class="carousel-caption-title">Customize your own store</h5>
-                        <p class="carousel-caption-text">Join us and create your store account</p>
-                    </div>
-                </div>
-            </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev" style="filter: invert(1);">
-                <span class="carousel-control-prev-icon carousel-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next" style="filter: invert(1);">
-                <span class="carousel-control-next-icon carousel-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
+    <?php
+    $carousel = GetStoreCarousel($store["id"]);
+    if (count($carousel) <= 0) { ?>
+        <div class="w-100 d-flex justify-content-center align-items-center">
+            <div class="alert alert-warning w-50 mt-3">Carousel not existing</div>
         </div>
-    </div>
-
+    <?php } else { ?>
+        <div class="d-flex justify-content-center my-5">
+            <div id="carouselExampleControls" class="carousel slide w-75" data-bs-ride="carousel">
+                <div class="carousel-inner rounded rounded-3">
+                    <?php
+                    foreach ($carousel as $key => $value) { ?>
+                        <div class="carousel-item <?= $key == 0 ? "active" : "" ?>">
+                            <img src="<?= isset($value['image']) ? "data:image/png;base64," . base64_encode($value['image']) : "https://cdn-icons-png.flaticon.com/512/869/869636.png" ?>" class="carousel-image">
+                            <div class="carousel-caption custom-carousel-caption">
+                                <h5 class="carousel-caption-title"><?= htmlspecialchars($value["title"]) ?></h5>
+                                <p class="carousel-caption-text"><?= htmlspecialchars($value["content"]) ?></p>
+                            </div>
+                        </div>
+                    <?php }
+                    ?>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev" style="filter: invert(1);">
+                    <span class="carousel-control-prev-icon carousel-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next" style="filter: invert(1);">
+                    <span class="carousel-control-next-icon carousel-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+    <?php } ?>
 
     <!-- Last Actions -->
     <div class="container my-5" id="lastActions">
@@ -177,13 +202,14 @@
 
     <!-- About Us -->
     <div class="container my-5" id="about">
-        <h2>About Us</h2>
+        <h2 class="text-center">About Us</h2>
         <div class="row">
             <div class="col-md-2">
-                <img src="https://via.placeholder.com/100" class="img-fluid" alt="...">
+                <img src="<?= isset($store['logo']) ? "data:image/png;base64," . base64_encode($store['logo']) : "https://cdn-icons-png.flaticon.com/512/869/869636.png" ?>" class="img-fluid" style="width:20vw;aspect-ratio: 1;" alt="...">
             </div>
             <div class="col-md-10">
-                <p>Description about the store or website.</p>
+                <h4><?= htmlspecialchars($store["name"]) ?></h4>
+                <p><?= htmlspecialchars($store["about"]) ?></p>
             </div>
         </div>
     </div>
@@ -198,17 +224,17 @@
                     <form method="post">
                         <div class="mb-3">
                             <label for="username" class="form-label">Email</label>
-                            <input type="text" class="form-control" id="email" placeholder="Enter your email" required>
+                            <input name="contact_name" type="text" class="form-control" id="email" placeholder="Enter your email" required>
                         </div>
                         <div class="mb-3">
                             <label for="subject" class="form-label">Subject</label>
-                            <input type="text" class="form-control" id="subject" placeholder="Enter the subject" required>
+                            <input name="contact_subject" type="text" class="form-control" id="subject" placeholder="Enter the subject" required>
                         </div>
                         <div class="mb-3">
                             <label for="message" class="form-label">Message</label>
-                            <textarea class="form-control" id="message" rows="3" placeholder="Enter your message" style="resize: none;" required></textarea>
+                            <textarea name="contact_message" class="form-control" id="message" rows="3" placeholder="Enter your message" style="resize: none;" required></textarea>
                         </div>
-                        <button type="submit" class="btn btn-dark d-block mx-auto">Send</button>
+                        <button name="contact" type="submit" class="btn btn-dark d-block mx-auto">Send</button>
                     </form>
                 </div>
             </div>
