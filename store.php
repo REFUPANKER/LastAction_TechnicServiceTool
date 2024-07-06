@@ -199,7 +199,6 @@ require_once "./managers/dbm.php";
             </div>
         </div>
     </div>
-
     <!-- About Us -->
     <div class="container my-5" id="about">
         <h2 class="text-center">About Us</h2>

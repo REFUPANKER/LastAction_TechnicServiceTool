@@ -79,10 +79,6 @@ $store = GetStoreByUserId($_SESSION["user"]);
             gap: 5px;
         }
 
-        .sidebar h6 {
-            color: #909090;
-        }
-
         .sidebar a {
             color: #adb5bd;
             text-decoration: none;
@@ -160,13 +156,12 @@ $store = GetStoreByUserId($_SESSION["user"]);
         <div class="user-info">
             <h1 class="w-100 text-center">Your Store</h1>
             <img src="https://via.placeholder.com/80" alt="Profile Picture">
-            <?php $userData = GetUserById($_SESSION["user"])
-            ?>
+            <?php $userData = GetUserById($_SESSION["user"]); ?>
             <h5 title="id:<?= $userData["id"] ?> | Account <?= $userData["active"] ? "active" : "disabled" ?> | <?= $userData["email"] ?>">
                 <?= htmlspecialchars($userData["name"]) ?>
             </h5>
             <div class="btn-group ">
-                <a href="../?p=profile" class="btn btn-secondary btn-sm text-white">
+                <a href="../?p=profile" target="_blank" class="btn btn-secondary btn-sm text-white">
                     <i class="fas fa-cog"></i>
                     <span>Profile</span>
                 </a>
@@ -177,16 +172,22 @@ $store = GetStoreByUserId($_SESSION["user"]);
             </div>
         </div>
         <a href="../"><i class="fas fa-dashboard"></i> Dashboard</a>
-        <h6 class="m-0 ms-5 w-100">Store</h6>
         <a href="."><i class="fas fa-home"></i> Home</a>
-        <h6 class="m-0 ms-5 w-100">Carousel</h6>
-        <a href="?p=addcarousel"><i class="fas fa-plus"></i> Add Image</a>
-        <a href="?p=removecarousel"><i class="fas fa-trash"></i> Remove Images</a>
-        <h6 class="m-0 ms-5 w-100">Configration</h6>
-        <a href="?p=actions"><i class="fas fa-play"></i> Actions</a>
-        <a href="?p=services"><i class="fas fa-code"></i> Services</a>
-        <h6 class="m-0 ms-5 w-100">Products</h6>
-        <a href="?p=manageproducts"><i class="fas fa-box"></i> Manage Products</a>
+        <div class="dropdown w-100 ps-2">
+            <a class="dropdown-toggle p-2" style="cursor: pointer;" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-film me-1"></i>Carousel</a>
+            <div class="dropdown-menu w-100 ms-3 border" aria-labelledby="dropdownMenuButton">
+                <a href="?p=addcarousel"><i class="fas fa-plus"></i> Add Image</a>
+                <a href="?p=removecarousel"><i class="fas fa-trash"></i> Remove Images</a>
+            </div>
+        </div>
+        <div class="dropdown w-100 ps-2">
+            <a class="dropdown-toggle p-2" style="cursor: pointer;" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-sliders me-1"></i>Manage</a>
+            <div class="dropdown-menu w-100 ms-3 border" aria-labelledby="dropdownMenuButton">
+                <a href="?p=actions"><i class="fas fa-play"></i> Actions</a>
+                <a href="?p=services"><i class="fas fa-code"></i> Services</a>
+                <a href="?p=manageproducts"><i class="fas fa-box"></i> Products</a>
+            </div>
+        </div>
     </div>
     <div class="content">
         <div class="container">
@@ -198,7 +199,7 @@ $store = GetStoreByUserId($_SESSION["user"]);
                     <?php
 
                     $submitted = false;
-                    if (isset($_POST["create_store"])) {
+                    if (!isset($store) && isset($_POST["create_store"])) {
                         CreateStore($_POST["store_name"], $_POST["store_about"], isset($_FILES["store_logo"]["tmp_name"]) ? $_FILES["store_logo"]["tmp_name"] : null);
                         $submitted = true;
                     ?>
@@ -242,8 +243,7 @@ $store = GetStoreByUserId($_SESSION["user"]);
                             <img src="<?= isset($store['logo']) ? "data:image/png;base64," . base64_encode($store['logo']) : "https://cdn-icons-png.flaticon.com/512/869/869636.png" ?>" alt="Logo" class="h-100 img-thumbnail" style="aspect-ratio: 1;object-fit: 100% 100%;">
                             <div class="ms-3 d-flex gap-1 flex-column w-100 h-100 justify-content-center">
                                 <h4 class="m-0 w-25 text-decoration-underline" title="Store Name"><?= htmlspecialchars($store['name']) ?></h4>
-                                <h6 class="m-0">About</h6>
-                                <textarea style="resize:none;border:none;background-color: transparent;" readonly class="w-100 h-100"><?= htmlspecialchars($store['about']) ?></textarea>
+                                <textarea style="resize:none;border:none;background-color: transparent;outline: none;" readonly class="w-100 m-0 p-0 h-100"><?= htmlspecialchars($store['about']) ?></textarea>
                                 <div class="d-flex gap-2">
                                     <a onclick="alert(`lastaction/store?t=<?= $store['token'] ?>`);" class="btn btn-primary w-25 mt-2 rounded rounded-3">Share</a>
                                     <a target="_blank" href="../../store.php?t=<?= $store['token'] ?>" class="btn btn-success mt-2 rounded rounded-3 w-25">Preview</a>
@@ -251,14 +251,44 @@ $store = GetStoreByUserId($_SESSION["user"]);
                             </div>
                         </div>
                         <div class="mt-3 h-100 w-100 d-flex flex-column align-items-center justify-content-center">
-                            <div class="d-flex flex-column w-75 align-items-center">
+                            <div class="d-flex flex-column w-75 align-items-center gap-4">
                                 <div class="w-100">
+                                    <h5>Change Name</h5>
+                                    <?php
+                                    $MaxnameUpdateTime = 24*60 * 60;
+                                    $nameUpdateTime = (isset($_SESSION["uStorename"]) ? time() - $_SESSION["uStorename"] : $MaxnameUpdateTime);
+                                    if ($nameUpdateTime >= $MaxnameUpdateTime) { ?>
+                                        <form method="post" class="d-flex flex-column gap-1 mt-3 w-100">
+                                            <?php
+                                            // UPDATE STORE NAME
+                                            if (isset($_POST["u_store_name"])) {
+                                                UpdateStoreName($_POST["u_store_name"]);
+                                                header("refresh:3");
+                                                $_SESSION["uStorename"] = time(); ?>
+                                                <div class="alert alert-success">Name Updated , refreshing ... (3sec)</div>
+                                            <?php } else { ?>
+                                                <input required maxlength="64" class="form-control bg-dark" placeholder="<?= htmlspecialchars($store["name"]) ?>" name="u_store_name">
+                                                <button class="btn btn-outline-success">Update</button>
+                                            <?php
+                                            } ?>
+
+                                        </form>
+                                    <?php
+                                    } else { ?>
+                                        <div class="alert m-0 alert-warning w-100">You cant update store name right now
+                                            <br>Last update : <?= floor($nameUpdateTime / 60) ?> min <?= $nameUpdateTime % 60 ?> sec ago
+                                        </div>
+                                    <?php }
+                                    ?>
+                                    <i class="m-0">Only possible in every <?= $MaxnameUpdateTime / (60*60) ?> hours</i>
+                                </div>
+                                <div class="w-100">
+                                    <h5>Change About</h5>
                                     <?php
                                     $MaxAboutUpdateTime = 5 * 60;
                                     $aboutUpdateTime = (isset($_SESSION["uStoreAbout"]) ? time() - $_SESSION["uStoreAbout"] : $MaxAboutUpdateTime);
                                     if ($aboutUpdateTime >= $MaxAboutUpdateTime) { ?>
                                         <form method="post" class="d-flex flex-column gap-1 mt-3 w-100">
-                                            <h5>Change About</h5>
                                             <?php
                                             // UPDATE STORE ABOUT
                                             if (isset($_POST["u_store_about"])) {
@@ -281,6 +311,40 @@ $store = GetStoreByUserId($_SESSION["user"]);
                                     <?php }
                                     ?>
                                     <i class="m-0">Only possible in every <?= $MaxAboutUpdateTime / 60 ?> minutes</i>
+                                </div>
+                                <div class="w-100">
+                                    <h5>Change Logo</h5>
+                                    <?php
+                                    // UPDATE STORE LOGO
+                                    $MaxLogoUpdateTime = 10 * 60;
+                                    if (isset($_POST["update_logo"])) {
+                                        if (isset($_FILES["update_logo"]) && file_exists($_FILES["update_logo"]["tmp_name"])) {
+                                            UpdateStoreLogo($_FILES["update_logo"]["tmp_name"]);
+                                            unset($_POST);
+                                            $_SESSION["storeLogoUpdate"] = time();
+                                            header("refresh:3"); ?>
+                                            <div class="alert alert-success">Logo Updated,Refreshing page...</div>
+                                        <?php
+                                        } else { ?>
+                                            <div class="alert alert-warning">Image not selected</div>
+                                        <?php }
+                                    }
+                                    $logoUpdateTime = isset($_SESSION["storeLogoUpdate"]) ? time() - $_SESSION["storeLogoUpdate"] : $MaxLogoUpdateTime;
+                                    if ($logoUpdateTime < $MaxLogoUpdateTime) { ?>
+                                        <div class="alert m-0 alert-warning w-100">You cant change store logo right now
+                                            <br>Last update : <?= floor($logoUpdateTime / 60) ?> min <?= $logoUpdateTime % 60 ?> sec ago
+                                        </div>
+                                    <?php } else { ?>
+                                        <form method="post" enctype="multipart/form-data" class="d-flex w-100 justify-content-center gap-3 align-items-center">
+                                            <div id="selectedImage" class="bgimg" style="width: 14vmax;aspect-ratio: 1;border:0.3vmax solid white;background-color: rgba(255,255,255,0.5);border-radius: 0.5vmax;background-size:100% 100%;background-repeat: no-repeat;"></div>
+                                            <div class="d-flex flex-column justify-content-around gap-2">
+                                                <label class="form-control btn btn-outline-secondary align-content-center text-white" title="Logo" for="store_logo">Upload Logo</label>
+                                                <input onchange="onStoreImageSelected()" id="store_logo" class="d-none" type="file" placeholder="Logo" name="update_logo" title="select file" accept="image/jpeg, image/png">
+                                                <button class=" btn btn-success form-control" name="update_logo">Update</button>
+                                            </div>
+                                        </form>
+                                    <?php } ?>
+                                    <i class="m-0">Only possible in every <?= $MaxLogoUpdateTime / 60 ?> minutes</i>
                                 </div>
                             </div>
                         </div>

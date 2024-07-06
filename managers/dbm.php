@@ -188,10 +188,23 @@ function GetStoreByToken($token)
     return runQuery("select * from stores where token = ?", [$token]);
 }
 
-function UpdateStoreAbout($about){
-    runQuery("update stores set about = ? where owner = ?", [$about,$_SESSION["user"]]);
+function UpdateStoreName($name)
+{
+    runQuery("update stores set name = ? where owner = ?", [$name, $_SESSION["user"]]);
 }
 
+function UpdateStoreAbout($about)
+{
+    runQuery("update stores set about = ? where owner = ?", [$about, $_SESSION["user"]]);
+}
+
+function UpdateStoreLogo($image)
+{
+    if (isset($image)) {
+        $image = file_get_contents($image);
+    }
+    runQuery("update stores set logo = ? where owner = ?", [$image, $_SESSION["user"]]);
+}
 /**
  * returns link of store preview link if its exists 
  */
