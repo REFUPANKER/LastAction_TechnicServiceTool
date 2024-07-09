@@ -24,7 +24,7 @@
 </style>
 
 
-<div class="news d-flex flex-column w-auto h-100 ">
+<div class="news d-flex flex-column w-auto ">
     <h2 class="news-title">News</h2>
     <div class="news-container">
         <div class="accordion" id="newsAccordion">

@@ -8,7 +8,7 @@ require_once "./managers/dbm.php";
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Last Action | Store</title>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <?php
@@ -18,13 +18,13 @@ require_once "./managers/dbm.php";
             $owner = GetUserById($store["owner"]);
         } else { ?>
             <div class="alert alert-warning m-3">No store valid for this token,redirecting to home page (3sec)</div>
-        <?php
+    <?php
             header("refresh:3;url=./");
             return;
         }
     }
     ?>
-
+    <title><?= $store["name"] ?> | Last Action</title>
     <style>
         .navbar-custom {
             background-color: black;
@@ -81,15 +81,18 @@ require_once "./managers/dbm.php";
 </head>
 
 <body style="background-color: #252525;">
-
     <!-- Navbar -->
     <nav class="navbar navbar-expand-md navbar-custom">
         <div class="container-fluid d-flex justify-content-around align-items-center gap-2">
-            <a href="./" class="home-link"><img src="https://cdn-icons-png.flaticon.com/512/1946/1946436.png" alt="Home"></a>
-            <a class="navbar-brand" href="#"><?= htmlspecialchars($store["name"]) ?> by <?= htmlspecialchars($owner["name"]) ?></a>
+
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
+            <div class="collapse navbar-collapse w-100 gap-2" id="navbarNav">
+                <a href="./" class="nav-link home-link"><img src="https://cdn-icons-png.flaticon.com/512/1946/1946436.png" alt="Home"></a>
+                <a class="nav-link" href="#"><?= htmlspecialchars($store["name"]) ?> by <?= htmlspecialchars($owner["name"]) ?></a>
+                <div class="btn btn<?= $store["open"] ? "-success" : "-danger" ?>"><?= $store["open"] ? "Open" : "Closed" ?></div>
+            </div>
             <div class="collapse w-100 navbar-collapse justify-content-md-around" id="navbarNav">
                 <ul class="navbar-nav mb-2 mb-md-0">
                     <li class="nav-item">
@@ -106,7 +109,7 @@ require_once "./managers/dbm.php";
                     </li>
                 </ul>
             </div>
-            <div class="collapse navbar-collapse justify-content-md-around" id="navbarNav">
+            <div class="collapse w-100 navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav mb-2 mb-md-0">
                     <li class="nav-item">
                         <a class="nav-link" href="./auth.php">Account</a>
@@ -204,11 +207,12 @@ require_once "./managers/dbm.php";
         <h2 class="text-center">About Us</h2>
         <div class="row">
             <div class="col-md-2">
-                <img src="<?= isset($store['logo']) ? "data:image/png;base64," . base64_encode($store['logo']) : "https://cdn-icons-png.flaticon.com/512/869/869636.png" ?>" class="img-fluid" style="width:20vw;aspect-ratio: 1;" alt="...">
+                <img src="<?= isset($store['logo']) ? "data:image/png;base64," . base64_encode($store['logo']) : "https://cdn-icons-png.flaticon.com/512/869/869636.png" ?>" class="img-fluid rounded rounded-3" style="width:20vw;aspect-ratio: 1;" alt="...">
             </div>
-            <div class="col-md-10">
+            <div class="col-md-10 d-flex flex-column">
                 <h4><?= htmlspecialchars($store["name"]) ?></h4>
-                <p><?= htmlspecialchars($store["about"]) ?></p>
+                <p class="h-100"><?= htmlspecialchars($store["about"]) ?></p>
+                <h6 title="Year/Month/Day">Created at <?= htmlspecialchars(date("Y/m/d", strtotime($store["creation"]))) ?></h6>
             </div>
         </div>
     </div>

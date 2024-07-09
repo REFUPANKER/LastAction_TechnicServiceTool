@@ -22,6 +22,9 @@ if (isset($_GET["openStore"])) {
 $store = GetStoreByUserId($_SESSION["user"]);
 
 
+$status =   ["waiting", "in progress", "completed","cancelled"];
+$statusColor = ["#e0501b", "#abc720", "#20c723","#353535"];
+
 ?>
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
@@ -185,7 +188,15 @@ $store = GetStoreByUserId($_SESSION["user"]);
             <div class="dropdown-menu w-100 ms-3 border" aria-labelledby="dropdownMenuButton">
                 <a href="?p=actions"><i class="fas fa-play"></i> Actions</a>
                 <a href="?p=services"><i class="fas fa-code"></i> Services</a>
-                <a href="?p=manageproducts"><i class="fas fa-box"></i> Products</a>
+                <a href="?p=products"><i class="fas fa-box"></i> Products</a>
+            </div>
+        </div>
+        <div class="dropdown w-100 ps-2">
+            <a class="dropdown-toggle p-2" style="cursor: pointer;" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-users me-1"></i>Customers</a>
+            <div class="dropdown-menu w-100 ms-3 border" aria-labelledby="dropdownMenuButton">
+                <a href="?p=listcustomers"><i class="fas fa-list"></i> List</a>
+                <a href="?p=addcustomer"><i class="fas fa-plus"></i> Add</a>
+                <a href="?p=searchcustomer"><i class="fas fa-search"></i> Search</a>
             </div>
         </div>
     </div>
@@ -200,7 +211,11 @@ $store = GetStoreByUserId($_SESSION["user"]);
 
                     $submitted = false;
                     if (!isset($store) && isset($_POST["create_store"])) {
-                        CreateStore($_POST["store_name"], $_POST["store_about"], isset($_FILES["store_logo"]["tmp_name"]) ? $_FILES["store_logo"]["tmp_name"] : null);
+                        CreateStore(
+                            $_POST["store_name"],
+                            $_POST["store_about"],
+                            (isset($_FILES["store_logo"]["tmp_name"]) && file_exists($_FILES["store_logo"]["tmp_name"])) ? $_FILES["store_logo"]["tmp_name"] : null
+                        );
                         $submitted = true;
                     ?>
                         <div class="alert alert-success">Store created , loading ... (3sec)</div>
@@ -242,7 +257,7 @@ $store = GetStoreByUserId($_SESSION["user"]);
                         <div class="d-flex align-items-start" style="height: 13rem;">
                             <img src="<?= isset($store['logo']) ? "data:image/png;base64," . base64_encode($store['logo']) : "https://cdn-icons-png.flaticon.com/512/869/869636.png" ?>" alt="Logo" class="h-100 img-thumbnail" style="aspect-ratio: 1;object-fit: 100% 100%;">
                             <div class="ms-3 d-flex gap-1 flex-column w-100 h-100 justify-content-center">
-                                <h4 class="m-0 w-25 text-decoration-underline" title="Store Name"><?= htmlspecialchars($store['name']) ?></h4>
+                                <h4 class="m-0 text-decoration-underline" title="Store Name"><?= htmlspecialchars($store['name']) ?></h4>
                                 <textarea style="resize:none;border:none;background-color: transparent;outline: none;" readonly class="w-100 m-0 p-0 h-100"><?= htmlspecialchars($store['about']) ?></textarea>
                                 <div class="d-flex gap-2">
                                     <a onclick="alert(`lastaction/store?t=<?= $store['token'] ?>`);" class="btn btn-primary w-25 mt-2 rounded rounded-3">Share</a>
@@ -255,7 +270,7 @@ $store = GetStoreByUserId($_SESSION["user"]);
                                 <div class="w-100">
                                     <h5>Change Name</h5>
                                     <?php
-                                    $MaxnameUpdateTime = 24*60 * 60;
+                                    $MaxnameUpdateTime = 24 * 60 * 60;
                                     $nameUpdateTime = (isset($_SESSION["uStorename"]) ? time() - $_SESSION["uStorename"] : $MaxnameUpdateTime);
                                     if ($nameUpdateTime >= $MaxnameUpdateTime) { ?>
                                         <form method="post" class="d-flex flex-column gap-1 mt-3 w-100">
@@ -280,7 +295,7 @@ $store = GetStoreByUserId($_SESSION["user"]);
                                         </div>
                                     <?php }
                                     ?>
-                                    <i class="m-0">Only possible in every <?= $MaxnameUpdateTime / (60*60) ?> hours</i>
+                                    <i class="m-0">Only possible in every <?= $MaxnameUpdateTime / (60 * 60) ?> hours</i>
                                 </div>
                                 <div class="w-100">
                                     <h5>Change About</h5>

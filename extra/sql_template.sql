@@ -6,7 +6,7 @@ create table users(
 	name varchar(64),
 	email varchar(64),
     password varchar(64),
-	active int not null default 1
+	active int not null default 1,
 );
 
 drop table if exists news;
@@ -36,7 +36,8 @@ create table stores(
 	owner int not null default 0,
 	name varchar(64) not null default "My Store",
 	about varchar(512) not null default "Hello! im owner of this store",
-	open int not null default 1
+	open int not null default 1,
+	`creation` datetime not null default CURRENT_TIMESTAMP
 );
 
 drop table if exists store_carousel;
@@ -47,3 +48,22 @@ create table store_carousel(
 	title varchar(64) not null default "Carousel Title",
 	content varchar(512) not null default "Carousel Content"
 );
+
+drop table if exists customers;
+create table customers(
+	id int primary key AUTO_INCREMENT,
+	store int not null default 0,
+	active int not null default 1,
+	contact varchar(512),
+	name varchar(64) not null default UUID(),
+    issue varchar(512),
+    `entry` datetime not null default CURRENT_TIMESTAMP,
+    `status` int not null default 1
+);
+
+drop table if exists status;
+create table status(
+	id int primary key AUTO_INCREMENT,
+    `status` varchar(64)
+);
+insert into `status` (`status`) values ('cancelled','waiting','in progress','completed');

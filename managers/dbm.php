@@ -9,7 +9,7 @@ try {
     session_start();
     ob_start();
 
-    $inactive = 5 * 60;
+    $inactive = 10 * 60;
     if (isset($_SESSION["user"]) && isset($_SESSION['timeout'])) {
         $session_life = time() - $_SESSION['timeout'];
         if ($session_life > $inactive) {
@@ -228,7 +228,6 @@ function GetStoreCarouselCount($storeId)
 function RemoveStoreCarousel($carouselId)
 {
     runQuery("delete from store_carousel where id = ?", [$carouselId]);
-    header("refresh:0");
 }
 
 function AddStoreCarousel($storeId, $image, $title, $content)
@@ -242,3 +241,56 @@ function AddStoreCarousel($storeId, $image, $title, $content)
 }
 
 #endregion
+
+
+
+#region Customers
+
+function AddCustomer($name, $storeId, $issue, $contact)
+{
+    runQuery("insert into customers (name,store,issue,contact) values (?,?,?,?)", [$name, $storeId, $issue, $contact]);
+}
+
+function GetCustomers()
+{
+    return runQuery("select * from customers as c where c.store=(select id from stores where owner=?) order by active desc,status asc", [$_SESSION["user"]], single: false);
+}
+
+
+function ChangeCustomerActive($customer, $to)
+{
+    runQuery("update customers set active=? where id=? and store=(select id from stores where owner =?)", [$to, $customer, $_SESSION["user"]]);
+}
+
+function ChangeCustomerStatus($customer, $to)
+{
+    runQuery("update customers set status=? where id=? and store=(select id from stores where owner =?)", [$to, $customer, $_SESSION["user"]]);
+}
+
+
+function SearchCustomer($name = null, $issue = null, $id = null, $order = "id")
+{
+    if (isset($name)) {
+        return runQuery("select * from customers where store=(select id from stores where owner =?) and name like ? order by ".$order, [$_SESSION["user"], "%" . $name . "%"], single: false);
+    }
+    if (isset($issue)) {
+        return runQuery("select * from customers where store=(select id from stores where owner =?) and issue like ? order by ".$order, [$_SESSION["user"], "%" . $issue . "%"], single: false);
+    }
+    if (isset($id)) {
+        return  ["by_id" => runQuery("select * from customers where store=(select id from stores where owner =?) and id = ?", [$_SESSION["user"], $id])];
+    }
+}
+
+
+#endregion
+
+
+
+?>
+
+<script>
+    // FORM RESUBMIT DISABLE
+    if (window.history.replaceState) {
+        window.history.replaceState(null, null, window.location.href);
+    }
+</script>

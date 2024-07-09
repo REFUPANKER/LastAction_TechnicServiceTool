@@ -150,10 +150,6 @@ if (isset($_GET["logout"])) {
                 <?= $userData["name"] ?>
             </h5>
             <div class="btn-group">
-                <a href="../profile/" class="btn btn-secondary btn-sm text-white">
-                    <i class="fas fa-cog"></i>
-                    <span>Profile</span>
-                </a>
                 <a href="?logout=1" class="btn btn-danger btn-sm">
                     <i class="fas fa-sign-out-alt"></i>
                     <span>Logout</span>
@@ -164,8 +160,7 @@ if (isset($_GET["logout"])) {
         <a href="?p=profile"><i class="fas fa-user"></i> Profile</a>
         <a href="?p=messages"><i class="fas fa-message"></i> Messages</a>
         <a href="?p=news"><i class="fas fa-newspaper"></i> News</a>
-        <a target="_blank" href="./yourstore/"><i class="fas fa-store"></i> Your Store</a>
-        <a href="?p=addcustomer"><i class="fas fa-user-plus"></i> Add Customer</a>
+        <a href="./yourstore/"><i class="fas fa-store"></i> Your Store</a>
         <hr class="w-75 mt-1 mb-1">
         <a target="_blank" href="../faq.php"><i class="fas fa-question"></i> FAQ</a>
     </div>

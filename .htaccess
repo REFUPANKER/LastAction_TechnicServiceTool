@@ -1,0 +1,4 @@
+<FilesMatch "(.gitattributes|readme.md)$">
+  Order Allow,Deny
+  Deny from all
+</FilesMatch>
