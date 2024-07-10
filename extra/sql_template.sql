@@ -66,4 +66,4 @@ create table status(
 	id int primary key AUTO_INCREMENT,
     `status` varchar(64)
 );
-insert into `status` (`status`) values ('cancelled','waiting','in progress','completed');
+insert into `status` (`status`) values ('waiting','in progress','completed','cancelled');

@@ -158,9 +158,10 @@ if (isset($_GET["logout"])) {
         </div>
         <a href="."><i class="fas fa-home"></i> Home</a>
         <a href="?p=profile"><i class="fas fa-user"></i> Profile</a>
-        <a href="?p=messages"><i class="fas fa-message"></i> Messages</a>
         <a href="?p=news"><i class="fas fa-newspaper"></i> News</a>
+        <a href="?p=messages"><i class="fas fa-message"></i> Messages</a>
         <a href="./yourstore/"><i class="fas fa-store"></i> Your Store</a>
+        <a href="./products/"><i class="fas fa-box"></i> Products</a>
         <hr class="w-75 mt-1 mb-1">
         <a target="_blank" href="../faq.php"><i class="fas fa-question"></i> FAQ</a>
     </div>
@@ -177,7 +178,7 @@ if (isset($_GET["logout"])) {
                 $storeLink = StorePreviewLink();
                 
                 if (isset($storeLink)) { ?>
-                    <a target="_blank" href="../store.php?t=<?= $storeLink["token"] ?>" class="btn btn-success mt-2 rounded rounded-3 w-100">Preview</a>
+                    <a target="_blank" href="../store.php?t=<?= $storeLink["token"] ?>" class="btn btn-success mt-2 rounded rounded-3 w-100">Preview Your Store</a>
                 <?php }
                 ?>
 

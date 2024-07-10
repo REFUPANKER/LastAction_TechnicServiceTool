@@ -174,7 +174,7 @@ $statusColor = ["#e0501b", "#abc720", "#20c723","#353535"];
                 </a>
             </div>
         </div>
-        <a href="../"><i class="fas fa-dashboard"></i> Dashboard</a>
+        <a href="../"><i class="fas fa-cube"></i> Account</a>
         <a href="."><i class="fas fa-home"></i> Home</a>
         <div class="dropdown w-100 ps-2">
             <a class="dropdown-toggle p-2" style="cursor: pointer;" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-film me-1"></i>Carousel</a>
@@ -188,7 +188,6 @@ $statusColor = ["#e0501b", "#abc720", "#20c723","#353535"];
             <div class="dropdown-menu w-100 ms-3 border" aria-labelledby="dropdownMenuButton">
                 <a href="?p=actions"><i class="fas fa-play"></i> Actions</a>
                 <a href="?p=services"><i class="fas fa-code"></i> Services</a>
-                <a href="?p=products"><i class="fas fa-box"></i> Products</a>
             </div>
         </div>
         <div class="dropdown w-100 ps-2">
@@ -267,13 +266,13 @@ $statusColor = ["#e0501b", "#abc720", "#20c723","#353535"];
                         </div>
                         <div class="mt-3 h-100 w-100 d-flex flex-column align-items-center justify-content-center">
                             <div class="d-flex flex-column w-75 align-items-center gap-4">
-                                <div class="w-100">
+                                <div class="w-100" id="changename">
                                     <h5>Change Name</h5>
                                     <?php
                                     $MaxnameUpdateTime = 24 * 60 * 60;
                                     $nameUpdateTime = (isset($_SESSION["uStorename"]) ? time() - $_SESSION["uStorename"] : $MaxnameUpdateTime);
                                     if ($nameUpdateTime >= $MaxnameUpdateTime) { ?>
-                                        <form method="post" class="d-flex flex-column gap-1 mt-3 w-100">
+                                        <form method="post" action="#changename" class="d-flex flex-column gap-1 mt-3 w-100">
                                             <?php
                                             // UPDATE STORE NAME
                                             if (isset($_POST["u_store_name"])) {
@@ -297,13 +296,13 @@ $statusColor = ["#e0501b", "#abc720", "#20c723","#353535"];
                                     ?>
                                     <i class="m-0">Only possible in every <?= $MaxnameUpdateTime / (60 * 60) ?> hours</i>
                                 </div>
-                                <div class="w-100">
+                                <div class="w-100" id="changeabout">
                                     <h5>Change About</h5>
                                     <?php
                                     $MaxAboutUpdateTime = 5 * 60;
                                     $aboutUpdateTime = (isset($_SESSION["uStoreAbout"]) ? time() - $_SESSION["uStoreAbout"] : $MaxAboutUpdateTime);
                                     if ($aboutUpdateTime >= $MaxAboutUpdateTime) { ?>
-                                        <form method="post" class="d-flex flex-column gap-1 mt-3 w-100">
+                                        <form method="post" action="#changeabout" class="d-flex flex-column gap-1 mt-3 w-100">
                                             <?php
                                             // UPDATE STORE ABOUT
                                             if (isset($_POST["u_store_about"])) {
@@ -327,7 +326,7 @@ $statusColor = ["#e0501b", "#abc720", "#20c723","#353535"];
                                     ?>
                                     <i class="m-0">Only possible in every <?= $MaxAboutUpdateTime / 60 ?> minutes</i>
                                 </div>
-                                <div class="w-100">
+                                <div class="w-100" id="changelogo">
                                     <h5>Change Logo</h5>
                                     <?php
                                     // UPDATE STORE LOGO
@@ -350,7 +349,7 @@ $statusColor = ["#e0501b", "#abc720", "#20c723","#353535"];
                                             <br>Last update : <?= floor($logoUpdateTime / 60) ?> min <?= $logoUpdateTime % 60 ?> sec ago
                                         </div>
                                     <?php } else { ?>
-                                        <form method="post" enctype="multipart/form-data" class="d-flex w-100 justify-content-center gap-3 align-items-center">
+                                        <form method="post" action="#changelogo" enctype="multipart/form-data" class="d-flex w-100 justify-content-center gap-3 align-items-center">
                                             <div id="selectedImage" class="bgimg" style="width: 14vmax;aspect-ratio: 1;border:0.3vmax solid white;background-color: rgba(255,255,255,0.5);border-radius: 0.5vmax;background-size:100% 100%;background-repeat: no-repeat;"></div>
                                             <div class="d-flex flex-column justify-content-around gap-2">
                                                 <label class="form-control btn btn-outline-secondary align-content-center text-white" title="Logo" for="store_logo">Upload Logo</label>

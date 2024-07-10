@@ -1,33 +1,27 @@
 <?php
-try {
+session_start();
+ob_start();
+
+$inactive = 10 * 60;
+if (isset($_SESSION["user"]) && isset($_SESSION['timeout'])) {
+    $session_life = time() - $_SESSION['timeout'];
+    if ($session_life > $inactive) {
+        session_unset();
+        header("refresh:0");
+        exit();
+    }
+}
+$_SESSION['timeout'] = time();
+
+
+function runQuery($qstr, $params = [], $single = true, $returnId = false)
+{
     $con = mysqli_connect("localhost", "root", "", "LastAction");
     $con->set_charset("utf8");
     if ($con->connect_error) {
         die("Connection failed" . $con->connect_error);
     }
-
-    session_start();
-    ob_start();
-
-    $inactive = 10 * 60;
-    if (isset($_SESSION["user"]) && isset($_SESSION['timeout'])) {
-        $session_life = time() - $_SESSION['timeout'];
-        if ($session_life > $inactive) {
-            session_unset();
-            header("refresh:0");
-            exit();
-        }
-    }
-    $_SESSION['timeout'] = time();
-} catch (\Throwable $th) {
-    echo "We are having issues while connecting to database";
-}
-
-
-function runQuery($qstr, $params = [], $single = true, $returnId = false)
-{
     try {
-        global $con;
         if (!empty($params)) {
             $stmt = $con->prepare($qstr);
             if ($stmt === false) {
@@ -88,6 +82,8 @@ function runQuery($qstr, $params = [], $single = true, $returnId = false)
         }
     } catch (\Throwable $th) {
         return;
+    } finally {
+        $con->close();
     }
 }
 
@@ -268,16 +264,16 @@ function ChangeCustomerStatus($customer, $to)
 }
 
 
-function SearchCustomer($name = null, $issue = null, $id = null, $order = "id")
+function SearchCustomer($name = null, $issue = null, $id = null, $order = "active desc,status ")
 {
     if (isset($name)) {
-        return runQuery("select * from customers where store=(select id from stores where owner =?) and name like ? order by ".$order, [$_SESSION["user"], "%" . $name . "%"], single: false);
+        return runQuery("select * from customers where store=(select id from stores where owner =?) and name like ? order by " . $order, [$_SESSION["user"], "%" . $name . "%"], single: false);
     }
     if (isset($issue)) {
-        return runQuery("select * from customers where store=(select id from stores where owner =?) and issue like ? order by ".$order, [$_SESSION["user"], "%" . $issue . "%"], single: false);
+        return runQuery("select * from customers where store=(select id from stores where owner =?) and issue like ? order by " . $order, [$_SESSION["user"], "%" . $issue . "%"], single: false);
     }
     if (isset($id)) {
-        return  ["by_id" => runQuery("select * from customers where store=(select id from stores where owner =?) and id = ?", [$_SESSION["user"], $id])];
+        return runQuery("select * from customers where store=(select id from stores where owner =?) and id = ?", [$_SESSION["user"], $id],single: false);
     }
 }
 

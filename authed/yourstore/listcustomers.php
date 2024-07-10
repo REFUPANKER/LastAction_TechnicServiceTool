@@ -19,7 +19,7 @@
     }
     ?>
     <table>
-        <tr class="text-center border">
+        <tr class="text-center">
             <td><i class="fas ms-1 fa-diagram-project"></i></td>
             <td>Active</td>
             <td>Status</td>
@@ -32,13 +32,13 @@
         $customers = GetCustomers();
         foreach ($customers as $key => $value) { ?>
             <tr class="border" id="item<?= $value["id"] ?>">
-                <td class="p-2 text-center " title="<?= $status[$value["status"] - 1] ?>" style="background-color: <?= $statusColor[$value["status"] - 1] ?>;"></td>
+                <td class="p-2 text-center " title="<?= $status[$value["status"] - 1] ?>" style="border-left:solid 0.5rem <?= $statusColor[$value["status"] - 1] ?>;"><?= $value["id"] ?></td>
                 <td class="p-2 text-center">
                     <a href="?p=listcustomers&c=<?= $value["id"] ?>&active=<?= $value["active"] ?>" class="m-0 btn bg-<?= $value["active"] ? "success" : "danger" ?>" title="click to switch">
                         <?= $value["active"] ? "Active" : "Inactive" ?></a>
                 </td>
                 <td class="p-2 text-center">
-                    <form method="post" action="?p=searchcustomer#item<?= $value["id"] ?>" class="gap-2 d-flex flex-column align-items-center">
+                    <form method="post" action="?p=listcustomers#item<?= $value["id"] ?>" class="gap-2 d-flex flex-column align-items-center">
                         <select name="updateStatus" class="p-1 bg-dark rounded rounded-3">
                             <?php
                             foreach ($status as $k => $v) { ?>
