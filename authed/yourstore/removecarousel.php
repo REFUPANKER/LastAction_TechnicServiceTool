@@ -14,7 +14,7 @@ if (isset($_POST["removeCarousel"])) {
     header("refresh:0;");
 }
 if ($carouselCount > 0) { ?>
-    <div class="d-flex flex-wrap w-100 h-100 overflow-auto gap-2 align-items-center m-3" >
+    <div class="d-flex flex-wrap overflow-auto gap-2 m-3" >
         <?php foreach ($carousels as $key => $value) { ?>
             <div class="d-flex flex-column gap-2 w-25 p-2 bg-dark rounded rounded-3">
                 <img class="align-self-center" src="data:image/png;base64,<?= base64_encode($value["image"]) ?>" style="width:100%;aspect-ratio: 2/1;object-fit:100% 100%;">

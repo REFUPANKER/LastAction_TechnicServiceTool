@@ -161,7 +161,6 @@ if (isset($_GET["logout"])) {
         <a href="?p=news"><i class="fas fa-newspaper"></i> News</a>
         <a href="?p=messages"><i class="fas fa-message"></i> Messages</a>
         <a href="./yourstore/"><i class="fas fa-store"></i> Your Store</a>
-        <a href="./products/"><i class="fas fa-box"></i> Products</a>
         <hr class="w-75 mt-1 mb-1">
         <a target="_blank" href="../faq.php"><i class="fas fa-question"></i> FAQ</a>
     </div>
@@ -172,13 +171,14 @@ if (isset($_GET["logout"])) {
             if (isset($_GET["p"]) && !str_contains($_GET["p"], "/") && !str_contains($_GET["p"], ".") && file_exists($_GET["p"] . ".php")) {
                 include_once($_GET["p"] . ".php");
             } else { ?>
-                <h1>Dashboard</h1>
-                <p>This is the main content area. Place your content here.</p>
+                <h1>Wellcome <?= $userData["name"] ?> !</h1>
+                <p style="white-space: pre-line;">This is your account dashboard.
+                    You can customize your profile as you wish</p>
                 <?php
                 $storeLink = StorePreviewLink();
-                
+
                 if (isset($storeLink)) { ?>
-                    <a target="_blank" href="../store.php?t=<?= $storeLink["token"] ?>" class="btn btn-success mt-2 rounded rounded-3 w-100">Preview Your Store</a>
+                    <a target="_blank" href="../store.php?t=<?= $storeLink["token"] ?>" class="btn btn-success mt-2 rounded rounded-3 w-100">You have active store profile |  Preview  |</a>
                 <?php }
                 ?>
 

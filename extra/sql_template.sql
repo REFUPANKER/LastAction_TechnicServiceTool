@@ -67,3 +67,13 @@ create table status(
     `status` varchar(64)
 );
 insert into `status` (`status`) values ('waiting','in progress','completed','cancelled');
+
+drop table if exists messages;
+create table messages(
+id int primary key AUTO_INCREMENT,
+sender varchar(64),
+receiver int,
+`subject` varchar(128) not null default 'You have new message',
+`message` varchar(512),
+`datetime` datetime not null default CURRENT_TIMESTAMP
+);

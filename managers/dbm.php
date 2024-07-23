@@ -1,4 +1,8 @@
 <?php
+#region Database Manager setup
+ini_set('upload_max_filesize', '10M');
+ini_set('post_max_size', '10M');
+
 session_start();
 ob_start();
 
@@ -86,6 +90,7 @@ function runQuery($qstr, $params = [], $single = true, $returnId = false)
         $con->close();
     }
 }
+#endregion
 
 
 #region User
@@ -239,7 +244,6 @@ function AddStoreCarousel($storeId, $image, $title, $content)
 #endregion
 
 
-
 #region Customers
 
 function AddCustomer($name, $storeId, $issue, $contact)
@@ -273,14 +277,31 @@ function SearchCustomer($name = null, $issue = null, $id = null, $order = "activ
         return runQuery("select * from customers where store=(select id from stores where owner =?) and issue like ? order by " . $order, [$_SESSION["user"], "%" . $issue . "%"], single: false);
     }
     if (isset($id)) {
-        return runQuery("select * from customers where store=(select id from stores where owner =?) and id = ?", [$_SESSION["user"], $id],single: false);
+        return runQuery("select * from customers where store=(select id from stores where owner =?) and id = ?", [$_SESSION["user"], $id], single: false);
     }
 }
 
 
 #endregion
 
+#region Messages
 
+function GetMessages()
+{
+    return runQuery("select * from messages where receiver=? order by datetime desc", [$_SESSION["user"]], single: false);
+}
+
+function SendMessage($sender, $receiver, $subject, $message)
+{
+    return runQuery("insert into messages (`sender`,`receiver`,`subject`,`message`) values (?,?,?,?)", [$sender, $receiver, $subject, $message]);
+}
+
+function RemoveMessage($messageId)
+{
+    return runQuery("delete from messages where id=? and receiver=?",[$messageId,$_SESSION["user"]]);
+}
+
+#endregion
 
 ?>
 

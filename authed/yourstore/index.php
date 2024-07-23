@@ -188,6 +188,7 @@ $statusColor = ["#e0501b", "#abc720", "#20c723","#353535"];
             <div class="dropdown-menu w-100 ms-3 border" aria-labelledby="dropdownMenuButton">
                 <a href="?p=actions"><i class="fas fa-play"></i> Actions</a>
                 <a href="?p=services"><i class="fas fa-code"></i> Services</a>
+                <a href="./products/"><i class="fas fa-box"></i> Products</a>
             </div>
         </div>
         <div class="dropdown w-100 ps-2">

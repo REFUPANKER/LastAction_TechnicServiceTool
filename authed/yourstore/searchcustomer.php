@@ -45,7 +45,7 @@ if (isset($_POST["updateStatus"]) && isset($_POST["c"])) {
     header("refresh:3;?p=searchcustomer#item" . $_POST["c"]); ?>
     <div class="alert alert-success">Customer current action changed (refreshing in 3sec)</div>
 <?php } ?>
-<div class="w-100 d-flex flex-column border overflow-auto" style="max-height: 75vh;">
+<div class="w-100 d-flex flex-column border overflow-auto" style="max-height: 70vh;">
     <table>
         <tr class="text-center">
             <td><i class="fas ms-1 fa-diagram-project"></i></td>

@@ -222,23 +222,38 @@ require_once "./managers/dbm.php";
         <div class="container py-4">
             <div class="row justify-content-center">
                 <div class="col-md-6">
-                    <h5 class="text-center">Contact Us</h5>
+                    <h5 class="text-center" id="contactform">Contact Us</h5>
                     <!-- //TODO:add contact us mail system -->
-                    <form method="post">
-                        <div class="mb-3">
-                            <label for="username" class="form-label">Email</label>
-                            <input name="contact_name" type="text" class="form-control" id="email" placeholder="Enter your email" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="subject" class="form-label">Subject</label>
-                            <input name="contact_subject" type="text" class="form-control" id="subject" placeholder="Enter the subject" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="message" class="form-label">Message</label>
-                            <textarea name="contact_message" class="form-control" id="message" rows="3" placeholder="Enter your message" style="resize: none;" required></textarea>
-                        </div>
-                        <button name="contact" type="submit" class="btn btn-dark d-block mx-auto">Send</button>
-                    </form>
+                    <?php
+                    if (isset($_POST["contact"])) {
+                        SendMessage($_POST["contact_email"], $store["owner"], $_POST["contact_subject"], $_POST["contact_message"]);
+                        $_SESSION["last_contactMessageSent"] = time(); ?>
+                        <div class="alert alert-success">Message sent (refreshing page...)</div>
+                    <?php header("refresh:2");
+                    }
+                    $maxContactTime = 5 * 60;
+                    if (isset($_SESSION["last_contactMessageSent"]) && ($contactSent = time() - $_SESSION["last_contactMessageSent"]) < $maxContactTime) { ?>
+                        <div class="alert alert-warning">Message already received from this device
+                            (available in <?= floor($maxContactTime / 60 - $contactSent / 60) ?> mins <?= 60 - floor($contactSent % 60) ?> seconds)</div>
+                    <?php } else { ?>
+                        <form method="post" action="#contactform">
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input name="contact_email" type="text" maxlength="64" class="form-control" id="email" placeholder="Enter your email" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="subject" class="form-label">Subject</label>
+                                <input minlength="3" maxlength="128" name="contact_subject" type="text" class="form-control" id="subject" placeholder="Enter the subject" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="message" class="form-label">Message</label>
+                                <textarea name="contact_message" maxlength="512" class="form-control" id="message" rows="3" placeholder="Enter your message" style="resize: none;" required></textarea>
+                            </div>
+                            <button name="contact" type="submit" class="btn btn-dark d-block mx-auto">Send</button>
+                        </form>
+                    <?php }
+
+                    ?>
                 </div>
             </div>
             <div class="row justify-content-center mt-3">
