@@ -1,3 +1,8 @@
+<?php
+if (!isset($_SESSION["user"])) {
+    header("location:../auth.php");
+}
+?>
 <style>
     .news {
         background-color: #343a40;
@@ -27,7 +32,7 @@
 <div class="news d-flex flex-column w-auto ">
     <h2 class="news-title">News</h2>
     <div class="news-container">
-        <div class="accordion" id="newsAccordion">
+        <div class="accordion p-1" id="newsAccordion">
             <?php
             $gnews = GetNews();
             for ($i = 0; $i < count($gnews); $i++) {

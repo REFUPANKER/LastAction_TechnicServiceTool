@@ -284,8 +284,8 @@ function SearchCustomer($name = null, $issue = null, $id = null, $order = "activ
 
 #endregion
 
-#region Messages
 
+#region Messages
 function GetMessages()
 {
     return runQuery("select * from messages where receiver=? order by datetime desc", [$_SESSION["user"]], single: false);

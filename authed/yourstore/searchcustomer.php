@@ -1,3 +1,11 @@
+<?php
+if (!isset($store)) {
+    echo "<div class='alert alert-danger'>No Store existing. Redirecting in 3 seconds</div>";
+    header("refresh:3;./");
+    return;
+}
+?>
+
 <h1 class="text-center m-0">Search Customers</h1>
 <?php
 // SEARCH RESULTS

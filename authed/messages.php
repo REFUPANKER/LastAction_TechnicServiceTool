@@ -1,3 +1,8 @@
+<?php
+if (!isset($_SESSION["user"])) {
+    header("location:../auth.php");
+}
+?>
 <h1 class="text-center m-0">Messages</h1>
 
 <style>
@@ -22,10 +27,9 @@
 <div class="container overflow-auto gap-1 d-flex flex-column">
     <?php
     if (isset($_GET["rmsg"])) {
-        RemoveMessage($_GET["rmsg"]); ?>
-        <div class="alert alert-success">Message removed (refreshing in 3 sec...)</div>
-    <?php header("refresh:3;?p=messages");
+        RemoveMessage($_GET["rmsg"]);
     }
+
     $getmessages = GetMessages();
     foreach ($getmessages as $key => $value) { ?>
         <div class="card message-card">

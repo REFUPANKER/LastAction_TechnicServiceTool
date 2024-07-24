@@ -164,18 +164,15 @@ $statusColor = ["#e0501b", "#abc720", "#20c723","#353535"];
                 <?= htmlspecialchars($userData["name"]) ?>
             </h5>
             <div class="btn-group ">
-                <a href="../?p=profile" target="_blank" class="btn btn-secondary btn-sm text-white">
-                    <i class="fas fa-cog"></i>
-                    <span>Profile</span>
-                </a>
                 <a href="?logout=1" class="btn btn-danger btn-sm text-white p-2 ">
                     <i class="fas fa-sign-out-alt"></i>
                     <span>Logout</span>
                 </a>
             </div>
         </div>
-        <a href="../"><i class="fas fa-cube"></i> Account</a>
+        <a href="../"><i class="fas fa-chevron-left"></i> Account</a>
         <a href="."><i class="fas fa-home"></i> Home</a>
+        <a href="./products/"><i class="fas fa-cubes"></i> Products</a>
         <div class="dropdown w-100 ps-2">
             <a class="dropdown-toggle p-2" style="cursor: pointer;" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-film me-1"></i>Carousel</a>
             <div class="dropdown-menu w-100 ms-3 border" aria-labelledby="dropdownMenuButton">
@@ -188,7 +185,6 @@ $statusColor = ["#e0501b", "#abc720", "#20c723","#353535"];
             <div class="dropdown-menu w-100 ms-3 border" aria-labelledby="dropdownMenuButton">
                 <a href="?p=actions"><i class="fas fa-play"></i> Actions</a>
                 <a href="?p=services"><i class="fas fa-code"></i> Services</a>
-                <a href="./products/"><i class="fas fa-box"></i> Products</a>
             </div>
         </div>
         <div class="dropdown w-100 ps-2">

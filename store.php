@@ -8,7 +8,7 @@ require_once "./managers/dbm.php";
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <?php
@@ -103,9 +103,6 @@ require_once "./managers/dbm.php";
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#about">About Us</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="./faq.php">FAQ</a>
                     </li>
                 </ul>
             </div>
@@ -225,14 +222,17 @@ require_once "./managers/dbm.php";
                     <h5 class="text-center" id="contactform">Contact Us</h5>
                     <!-- //TODO:add contact us mail system -->
                     <?php
-                    if (isset($_POST["contact"])) {
-                        SendMessage($_POST["contact_email"], $store["owner"], $_POST["contact_subject"], $_POST["contact_message"]);
-                        $_SESSION["last_contactMessageSent"] = time(); ?>
+                    $maxContactTime = 5 * 60;
+                    $contactSent = isset($_SESSION["last_contactMessageSent"]) ? (time() - $_SESSION["last_contactMessageSent"]) : $maxContactTime;
+
+                    if (isset($_POST["contact"]) && $contactSent > $maxContactTime) {
+                        $_SESSION["last_contactMessageSent"] = time();
+                        SendMessage($_POST["contact_email"], $store["owner"], $_POST["contact_subject"], $_POST["contact_message"]); ?>
                         <div class="alert alert-success">Message sent (refreshing page...)</div>
                     <?php header("refresh:2");
-                    }
-                    $maxContactTime = 5 * 60;
-                    if (isset($_SESSION["last_contactMessageSent"]) && ($contactSent = time() - $_SESSION["last_contactMessageSent"]) < $maxContactTime) { ?>
+                    } else 
+
+                    if ($contactSent <= $maxContactTime) { ?>
                         <div class="alert alert-warning">Message already received from this device
                             (available in <?= floor($maxContactTime / 60 - $contactSent / 60) ?> mins <?= 60 - floor($contactSent % 60) ?> seconds)</div>
                     <?php } else { ?>
@@ -256,10 +256,8 @@ require_once "./managers/dbm.php";
                     ?>
                 </div>
             </div>
-            <div class="row justify-content-center mt-3">
-                <div class="col-md-6 text-center">
-                    <span>&copy; 2024 Last Action</span>
-                </div>
+            <div class="d-flex justify-content-center align-items-center w-100 text-center gap-1">
+                <i class="fa-regular fa-copyright"></i> 2024 Last Action | <a class="text-white text-decoration-none" href="./faq.php"><i class="fa-regular fa-circle-question"></i> FAQ</a>
             </div>
         </div>
     </footer>

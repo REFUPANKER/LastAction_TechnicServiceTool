@@ -84,8 +84,6 @@
                                 <div id="collapse<?= $i ?>" class="accordion-collapse collapse" aria-labelledby="heading<?= $i ?>" data-bs-parent="#faqAccordion">
                                     <div class="accordion-body text-break">
                                         <?= $gfaq[$i]["answer"] ?>
-                                        <hr class="mt-1 mb-1">
-                                        <h6><?= $gfaq[$i]["date"] ?></h6>
                                     </div>
                                 </div>
                             </div>
