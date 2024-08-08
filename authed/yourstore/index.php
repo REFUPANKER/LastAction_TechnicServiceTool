@@ -21,10 +21,6 @@ if (isset($_GET["openStore"])) {
 
 $store = GetStoreByUserId($_SESSION["user"]);
 
-
-$status =   ["waiting", "in progress", "completed","cancelled"];
-$statusColor = ["#e0501b", "#abc720", "#20c723","#353535"];
-
 ?>
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
@@ -171,22 +167,9 @@ $statusColor = ["#e0501b", "#abc720", "#20c723","#353535"];
             </div>
         </div>
         <a href="../"><i class="fas fa-chevron-left"></i> Account</a>
+        <h5>Management</h5>
         <a href="."><i class="fas fa-home"></i> Home</a>
         <a href="./products/"><i class="fas fa-cubes"></i> Products</a>
-        <div class="dropdown w-100 ps-2">
-            <a class="dropdown-toggle p-2" style="cursor: pointer;" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-film me-1"></i>Carousel</a>
-            <div class="dropdown-menu w-100 ms-3 border" aria-labelledby="dropdownMenuButton">
-                <a href="?p=addcarousel"><i class="fas fa-plus"></i> Add Image</a>
-                <a href="?p=removecarousel"><i class="fas fa-trash"></i> Remove Images</a>
-            </div>
-        </div>
-        <div class="dropdown w-100 ps-2">
-            <a class="dropdown-toggle p-2" style="cursor: pointer;" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-sliders me-1"></i>Manage</a>
-            <div class="dropdown-menu w-100 ms-3 border" aria-labelledby="dropdownMenuButton">
-                <a href="?p=actions"><i class="fas fa-play"></i> Actions</a>
-                <a href="?p=services"><i class="fas fa-code"></i> Services</a>
-            </div>
-        </div>
         <div class="dropdown w-100 ps-2">
             <a class="dropdown-toggle p-2" style="cursor: pointer;" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-users me-1"></i>Customers</a>
             <div class="dropdown-menu w-100 ms-3 border" aria-labelledby="dropdownMenuButton">
@@ -194,6 +177,20 @@ $statusColor = ["#e0501b", "#abc720", "#20c723","#353535"];
                 <a href="?p=addcustomer"><i class="fas fa-plus"></i> Add</a>
                 <a href="?p=searchcustomer"><i class="fas fa-search"></i> Search</a>
             </div>
+        </div>
+        <h5>Properties</h5>
+        <div class="dropdown w-100 ps-2">
+            <a class="dropdown-toggle p-2" style="cursor: pointer;" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-film me-1"></i>Carousel</a>
+            <div class="dropdown-menu w-100 ms-3 border" aria-labelledby="dropdownMenuButton">
+                <a href="?p=addcarousel"><i class="fas fa-plus"></i> Add Image</a>
+                <a href="?p=removecarousel"><i class="fas fa-trash"></i> Remove Images</a>
+            </div>
+        </div>
+        <a href="?p=actions"><i class="fas fa-play"></i> Actions</a>
+        <a href="?p=services"><i class="fas fa-code"></i> Services</a>
+        <div class="m-1 text-center d-flex flex-column w-75 p-1 alert alert-warning align-items-center">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            This customisations for your store page
         </div>
     </div>
     <div class="content">

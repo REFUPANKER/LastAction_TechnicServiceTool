@@ -8,6 +8,7 @@ require_once "./managers/dbm.php";
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="./resources/styles/colorics.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
@@ -80,7 +81,7 @@ require_once "./managers/dbm.php";
     </style>
 </head>
 
-<body style="background-color: #252525;">
+<body class="bgc-darkgray">
     <!-- Navbar -->
     <nav class="navbar navbar-expand-md navbar-custom">
         <div class="container-fluid d-flex justify-content-around align-items-center gap-2">
@@ -155,22 +156,27 @@ require_once "./managers/dbm.php";
     <!-- Last Actions -->
     <div class="container my-5" id="lastActions">
         <h2 class="text-center mb-4">Last Actions</h2>
-        <div class="scrollable">
-            <div class="card mb-3">
-                <div class="row g-0">
-                    <div class="col-2">
-                        <img src="https://via.placeholder.com/150" class="img-fluid rounded-start" alt="...">
-                    </div>
-                    <div class="col">
-                        <div class="card-body">
-                            <h5 class="card-title">Title 3</h5>
-                            <p class="card-text">Action 3</p>
-                            <p class="card-text"><small class="text-muted">Time 3</small></p>
+        <div class="scrollable border border-2 rounded rounded-3">
+            <?php
+            $getacts = GetActions($store["id"]);
+            if (!isset($getacts) || count($getacts) <= 0) {
+            ?>
+                <div class="alert alert-warning">No actions existing</div>
+            <?php
+            } else { ?>
+                <?php
+                foreach ($getacts as $key => $value) {
+                ?>
+                    <div title="ID : <?= $value["id"] ?>" class="d-flex flex-row align-items-center">
+                        <img src="<?= $statusImages[$value["status"] - 1] ?>" style="height: 5vw;aspect-ratio: 1;" class="rounded p-2">
+                        <div class="m-2 d-flex flex-column">
+                            <h5 class="m-0">Issue : <?= $value["issue"] ?></h5>
+                            <p class="m-0">Status : <?= $status[$value["status"] - 1] ?></p>
+                            <p class="m-0">Last Action : <?= $value["lastUpdate"] ?></p>
                         </div>
                     </div>
-                </div>
-            </div>
-            <!-- Add more cards as needed -->
+            <?php }
+            } ?>
         </div>
     </div>
 
@@ -220,19 +226,17 @@ require_once "./managers/dbm.php";
             <div class="row justify-content-center">
                 <div class="col-md-6">
                     <h5 class="text-center" id="contactform">Contact Us</h5>
-                    <!-- //TODO:add contact us mail system -->
                     <?php
                     $maxContactTime = 5 * 60;
                     $contactSent = isset($_SESSION["last_contactMessageSent"]) ? (time() - $_SESSION["last_contactMessageSent"]) : $maxContactTime;
-
-                    if (isset($_POST["contact"]) && $contactSent > $maxContactTime) {
+                    if (isset($_POST["contact"])) {
                         $_SESSION["last_contactMessageSent"] = time();
                         SendMessage($_POST["contact_email"], $store["owner"], $_POST["contact_subject"], $_POST["contact_message"]); ?>
                         <div class="alert alert-success">Message sent (refreshing page...)</div>
                     <?php header("refresh:2");
                     } else 
 
-                    if ($contactSent <= $maxContactTime) { ?>
+                    if ($contactSent < $maxContactTime) { ?>
                         <div class="alert alert-warning">Message already received from this device
                             (available in <?= floor($maxContactTime / 60 - $contactSent / 60) ?> mins <?= 60 - floor($contactSent % 60) ?> seconds)</div>
                     <?php } else { ?>

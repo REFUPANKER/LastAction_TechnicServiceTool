@@ -58,8 +58,21 @@ create table customers(
 	name varchar(64) not null default UUID(),
     issue varchar(512),
     `entry` datetime not null default CURRENT_TIMESTAMP,
-    `status` int not null default 1
+    `status` int not null default 1,
+	`lastUpdate` datetime not null default CURRENT_TIMESTAMP
 );
+
+drop trigger if exists customer_updated;
+DELIMITER $$
+CREATE TRIGGER customer_updated
+BEFORE UPDATE ON customers
+FOR EACH ROW
+BEGIN
+    SET NEW.lastUpdate = CURRENT_TIMESTAMP;
+END $$
+DELIMITER ;
+
+
 
 drop table if exists status;
 create table status(

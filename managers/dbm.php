@@ -18,6 +18,18 @@ if (isset($_SESSION["user"]) && isset($_SESSION['timeout'])) {
 $_SESSION['timeout'] = time();
 
 
+// Customer action status
+$status =   ["waiting", "in progress", "completed", "cancelled"];
+$statusImages =   [
+    "https://cdn-icons-png.flaticon.com/512/850/850960.png",         // "waiting",       
+    "https://cdn-icons-png.flaticon.com/512/4795/4795155.png",       // "in progress",   
+    "https://cdn-icons-png.flaticon.com/512/6784/6784655.png",       // "completed",     
+    "https://cdn-icons-png.flaticon.com/512/2001/2001386.png"          // "cancelled"      
+];
+$statusColor = ["#e0501b", "#abc720", "#20c723", "#353535"];
+
+
+
 function runQuery($qstr, $params = [], $single = true, $returnId = false)
 {
     $con = mysqli_connect("localhost", "root", "", "LastAction");
@@ -298,11 +310,18 @@ function SendMessage($sender, $receiver, $subject, $message)
 
 function RemoveMessage($messageId)
 {
-    return runQuery("delete from messages where id=? and receiver=?",[$messageId,$_SESSION["user"]]);
+    return runQuery("delete from messages where id=? and receiver=?", [$messageId, $_SESSION["user"]]);
 }
 
 #endregion
 
+
+#region Actions
+function GetActions($storeId)
+{
+    return runQuery("select id,status,issue,lastUpdate  from customers where store=? and active=1 order by lastUpdate desc", [$storeId], single: false);
+}
+#endregion
 ?>
 
 <script>

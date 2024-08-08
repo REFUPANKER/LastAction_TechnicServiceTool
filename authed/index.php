@@ -179,10 +179,15 @@ if (isset($_GET["logout"])) {
 
                 if (isset($storeLink)) { ?>
                     <a target="_blank" href="../store.php?t=<?= $storeLink["token"] ?>" class="btn btn-success mt-2 rounded rounded-3 w-100">You have active store profile | Preview |</a>
+                    <div class="d-flex flex-column w-100 pt-3">
+                        <h4>Analytics for your store</h4>
+                        use chart.js
+                    </div>
                 <?php } else { ?>
                     <div class="alert alert-warning rounded rounded-3 p-2 w-100">You dont have active store profile</div>
                     <a href="./yourstore/" class="btn fs-5 btn-success p-3"><i class="fas fa-store"></i> Create Store Account </a>
-            <?php } } ?>
+            <?php }
+            } ?>
         </div>
     </div>
     <script>

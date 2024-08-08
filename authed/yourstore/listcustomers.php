@@ -5,12 +5,6 @@ if (!isset($store)) {
     return;
 }
 ?>
-<!-- 
-    status explaintation
-    1 : waiting
-    2 : in progress
-    3 : completed
--->
 
 <h1 class="text-center">List Customers</h1>
 <div class="d-flex flex-column gap-1">
@@ -32,22 +26,31 @@ if (!isset($store)) {
                 <td>Active</td>
                 <td>Status</td>
                 <td>Name</td>
-                <td class="p-2 w-50">Issue</td>
+                <td class="p-2">Issue</td>
                 <td>Contact</td>
                 <td>Entry</td>
             </tr>
             <?php
             $customers = GetCustomers();
+            if (!isset($customers) || count($customers) <= 0) {
+            ?>
+                <tr>
+                    <td colspan="7">
+                        <div class="m-2 alert alert-warning">No results found</div>
+                    </td>
+                </tr>
+            <?php
+            }
             foreach ($customers as $key => $value) { ?>
                 <tr class="border" id="item<?= $value["id"] ?>">
                     <td class="p-2 text-center " title="<?= $status[$value["status"] - 1] ?>" style="border-left:solid 0.5rem <?= $statusColor[$value["status"] - 1] ?>;"><?= $value["id"] ?></td>
                     <td class="p-2 text-center">
                         <a href="?p=listcustomers&c=<?= $value["id"] ?>&active=<?= $value["active"] ?>" class="m-0 btn bg-<?= $value["active"] ? "success" : "danger" ?>" title="click to switch">
-                            <?= $value["active"] ? "Active" : "Inactive" ?></a>
+                            <?= $value["active"] ? "True" : "False" ?></a>
                     </td>
                     <td class="p-2 text-center">
                         <form method="post" action="?p=listcustomers#item<?= $value["id"] ?>" class="gap-2 d-flex flex-column align-items-center">
-                            <select name="updateStatus" class="p-1 bg-dark rounded rounded-3">
+                            <select name="updateStatus" class="p-1 w-100 bg-dark rounded rounded-3">
                                 <?php
                                 foreach ($status as $k => $v) { ?>
                                     <option <?= $value["status"] - 1 == $k ? "selected" : "" ?> value="<?= $k + 1 ?>"><?= $v ?></option>
@@ -64,5 +67,5 @@ if (!isset($store)) {
             <?php } ?>
         </table>
     </div>
-    <div class="d-flex align-items-center gap-1 alert p-1 m-0 alert-warning"><i class="fa fa-exclamation btn btn-warning"></i> Active actions will be listed on your store page</div>
+    <div class="d-flex align-items-center gap-1 alert p-1 m-0 alert-warning"><i class="fa fa-exclamation btn btn-warning"></i> Active customers will be listed on your store page</div>
 </div>

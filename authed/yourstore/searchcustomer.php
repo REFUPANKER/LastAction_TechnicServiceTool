@@ -28,9 +28,9 @@ if (isset($_POST["CallSearch"])) {
     <div class="d-flex flex-column gap-1">
         Search By
         <select name="SearchType">
-            <option <?=isset($_POST["SearchType"])&&$_POST["SearchType"]=="id"?"selected":""?> value="id">ID</option>
-            <option <?=isset($_POST["SearchType"])&&$_POST["SearchType"]=="name"?"selected":""?> value="name">Name</option>
-            <option <?=isset($_POST["SearchType"])&&$_POST["SearchType"]=="issue"?"selected":""?> value="issue">Issue</option>
+            <option <?= isset($_POST["SearchType"]) && $_POST["SearchType"] == "id" ? "selected" : "" ?> value="id">ID</option>
+            <option <?= isset($_POST["SearchType"]) && $_POST["SearchType"] == "name" ? "selected" : "" ?> value="name">Name</option>
+            <option <?= isset($_POST["SearchType"]) && $_POST["SearchType"] == "issue" ? "selected" : "" ?> value="issue">Issue</option>
         </select>
         <button name="CallSearch" class="btn btn-success">Search</button>
     </div>
@@ -49,7 +49,7 @@ if (isset($_GET["active"]) && isset($_GET["c"])) {
 <?php }
 
 if (isset($_POST["updateStatus"]) && isset($_POST["c"])) {
-    ChangeCustomerStatus($_POST["c"], $_POST["updateStatus"]); 
+    ChangeCustomerStatus($_POST["c"], $_POST["updateStatus"]);
     header("refresh:3;?p=searchcustomer#item" . $_POST["c"]); ?>
     <div class="alert alert-success">Customer current action changed (refreshing in 3sec)</div>
 <?php } ?>
@@ -60,7 +60,7 @@ if (isset($_POST["updateStatus"]) && isset($_POST["c"])) {
             <td>Active</td>
             <td>Status</td>
             <td>Name</td>
-            <td class="p-2 w-50">Issue</td>
+            <td class="p-2">Issue</td>
             <td>Contact</td>
             <td>Entry</td>
         </tr>
@@ -77,11 +77,11 @@ if (isset($_POST["updateStatus"]) && isset($_POST["c"])) {
                     <td class="p-2 text-center " title="<?= $status[$value["status"] - 1] ?>" style="border-left:solid 0.5rem <?= $statusColor[$value["status"] - 1] ?>;"><?= $value["id"] ?></td>
                     <td class="p-2 text-center">
                         <a href="?p=searchcustomer&c=<?= $value["id"] ?>&active=<?= $value["active"] ?>" class="m-0 btn bg-<?= $value["active"] ? "success" : "danger" ?>" title="click to switch">
-                            <?= $value["active"] ? "Active" : "Inactive" ?></a>
+                            <?= $value["active"] ? "True" : "False" ?></a>
                     </td>
                     <td class="p-2 text-center">
                         <form method="post" action="?p=searchcustomer#item<?= $value["id"] ?>" class="gap-2 d-flex flex-column align-items-center">
-                            <select name="updateStatus" class="p-1 bg-dark rounded rounded-3">
+                            <select name="updateStatus" class="p-1 w-100 bg-dark rounded rounded-3">
                                 <?php
                                 foreach ($status as $k => $v) { ?>
                                     <option <?= $value["status"] - 1 == $k ? "selected" : "" ?> value="<?= $k + 1 ?>"><?= $v ?></option>
