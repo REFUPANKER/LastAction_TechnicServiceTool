@@ -167,9 +167,9 @@ $store = GetStoreByUserId($_SESSION["user"]);
             </div>
         </div>
         <a href="../"><i class="fas fa-chevron-left"></i> Account</a>
-        <h5>Management</h5>
+        <h5 class="mb-0">Management</h5>
         <a href="."><i class="fas fa-home"></i> Home</a>
-        <a href="./products/"><i class="fas fa-cubes"></i> Products</a>
+        <a href="./products/" target="_blank"><i class="fas fa-cubes"></i> Products</a>
         <div class="dropdown w-100 ps-2">
             <a class="dropdown-toggle p-2" style="cursor: pointer;" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-users me-1"></i>Customers</a>
             <div class="dropdown-menu w-100 ms-3 border" aria-labelledby="dropdownMenuButton">
@@ -178,7 +178,7 @@ $store = GetStoreByUserId($_SESSION["user"]);
                 <a href="?p=searchcustomer"><i class="fas fa-search"></i> Search</a>
             </div>
         </div>
-        <h5>Properties</h5>
+        <h5 class="mb-0">Properties</h5>
         <div class="dropdown w-100 ps-2">
             <a class="dropdown-toggle p-2" style="cursor: pointer;" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-film me-1"></i>Carousel</a>
             <div class="dropdown-menu w-100 ms-3 border" aria-labelledby="dropdownMenuButton">

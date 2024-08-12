@@ -161,7 +161,7 @@ require_once "./managers/dbm.php";
             $getacts = GetActions($store["id"]);
             if (!isset($getacts) || count($getacts) <= 0) {
             ?>
-                <div class="alert alert-warning">No actions existing</div>
+                <div class="alert alert-warning m-2">No actions existing</div>
             <?php
             } else { ?>
                 <?php
@@ -170,7 +170,7 @@ require_once "./managers/dbm.php";
                     <div title="ID : <?= $value["id"] ?>" class="d-flex flex-row align-items-center">
                         <img src="<?= $statusImages[$value["status"] - 1] ?>" style="height: 5vw;aspect-ratio: 1;" class="rounded p-2">
                         <div class="m-2 d-flex flex-column">
-                            <h5 class="m-0">Issue : <?= $value["issue"] ?></h5>
+                            <h5 class="m-0">Issue : <?= htmlspecialchars($value["issue"]) ?></h5>
                             <p class="m-0">Status : <?= $status[$value["status"] - 1] ?></p>
                             <p class="m-0">Last Action : <?= $value["lastUpdate"] ?></p>
                         </div>

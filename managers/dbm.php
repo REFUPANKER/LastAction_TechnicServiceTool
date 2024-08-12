@@ -255,6 +255,22 @@ function AddStoreCarousel($storeId, $image, $title, $content)
 
 #endregion
 
+#region Services
+function GetStoreServices($storeId)
+{
+    return runQuery("select id,name,descr,image from store_services where store = ?", [$storeId], single: false);
+}
+
+function AddStoreService($storeId, $serviceName, $servDescr, $servImg = null)
+{
+    return runQuery("insert into store_services (store,name,descr,image) values (?,?,?,?)", [$storeId, $serviceName, $servDescr, $servImg]);
+}
+function RemoveStoreService($storeId,$serviceId)
+{
+    return runQuery("delete from store_services where store = ? and id = ?", [$storeId,$serviceId]);
+}
+#endregion
+
 
 #region Customers
 
@@ -324,6 +340,30 @@ function GetActions($storeId)
 #endregion
 ?>
 
+<!-- IMPORTS -->
+
+
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<?php
+function Toastify($text,$stateColor="green")
+{
+    echo '<script>Toastify({
+        text: "' . $text . '",
+        duration: 2000,
+        stopOnFocus:false,
+        gravity: "top",
+        position: "center",
+        style: {
+          background: "#151515",
+          borderRight:"0.5rem solid '.$stateColor.'",
+          boxShadow:"none"
+        },
+      }).showToast();
+    </script>';
+}
+
+?>
 <script>
     // FORM RESUBMIT DISABLE
     if (window.history.replaceState) {

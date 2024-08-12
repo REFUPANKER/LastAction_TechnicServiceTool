@@ -6,7 +6,7 @@ create table users(
 	name varchar(64),
 	email varchar(64),
     password varchar(64),
-	active int not null default 1,
+	active int not null default 1
 );
 
 drop table if exists news;
@@ -49,6 +49,15 @@ create table store_carousel(
 	content varchar(512) not null default "Carousel Content"
 );
 
+drop table if exists store_services;
+create table store_services(
+	id int primary key AUTO_INCREMENT,
+	store int,
+	name varchar(64),
+	descr varchar(512),
+	image mediumblob
+);
+
 drop table if exists customers;
 create table customers(
 	id int primary key AUTO_INCREMENT,
@@ -62,24 +71,6 @@ create table customers(
 	`lastUpdate` datetime not null default CURRENT_TIMESTAMP
 );
 
-drop trigger if exists customer_updated;
-DELIMITER $$
-CREATE TRIGGER customer_updated
-BEFORE UPDATE ON customers
-FOR EACH ROW
-BEGIN
-    SET NEW.lastUpdate = CURRENT_TIMESTAMP;
-END $$
-DELIMITER ;
-
-
-
-drop table if exists status;
-create table status(
-	id int primary key AUTO_INCREMENT,
-    `status` varchar(64)
-);
-insert into `status` (`status`) values ('waiting','in progress','completed','cancelled');
 
 drop table if exists messages;
 create table messages(
@@ -90,3 +81,25 @@ receiver int,
 `message` varchar(512),
 `datetime` datetime not null default CURRENT_TIMESTAMP
 );
+
+-- TRIGGERS
+
+drop trigger if exists customer_updated;
+DELIMITER $$
+CREATE TRIGGER customer_updated
+BEFORE UPDATE ON customers
+FOR EACH ROW
+BEGIN
+    SET NEW.lastUpdate = CURRENT_TIMESTAMP;
+END $$
+DELIMITER ;
+
+-- not-included
+/*
+drop table if exists status;
+create table status(
+	id int primary key AUTO_INCREMENT,
+    `status` varchar(64)
+);
+insert into `status` (`status`) values ('waiting','in progress','completed','cancelled');
+*/
