@@ -156,7 +156,7 @@ require_once "./managers/dbm.php";
     <!-- Last Actions -->
     <div class="container my-5" id="lastActions">
         <h2 class="text-center mb-4">Last Actions</h2>
-        <div class="scrollable border border-2 rounded rounded-3">
+        <div class="scrollable border border-2 rounded rounded-3 d-flex flex-wrap gap-2 p-1">
             <?php
             $getacts = GetActions($store["id"]);
             if (!isset($getacts) || count($getacts) <= 0) {
@@ -167,10 +167,10 @@ require_once "./managers/dbm.php";
                 <?php
                 foreach ($getacts as $key => $value) {
                 ?>
-                    <div title="ID : <?= $value["id"] ?>" class="d-flex flex-row align-items-center">
+                    <div title="ID : <?= $value["id"] ?>" class="d-flex flex-row align-items-center bg-dark rounded-1">
                         <img src="<?= $statusImages[$value["status"] - 1] ?>" style="height: 5vw;aspect-ratio: 1;" class="rounded p-2">
                         <div class="m-2 d-flex flex-column">
-                            <h5 class="m-0">Issue : <?= htmlspecialchars($value["issue"]) ?></h5>
+                            <h5 class="m-0">Order Number : <?= htmlspecialchars($value["id"]) ?></h5>
                             <p class="m-0">Status : <?= $status[$value["status"] - 1] ?></p>
                             <p class="m-0">Last Action : <?= $value["lastUpdate"] ?></p>
                         </div>
@@ -178,6 +178,7 @@ require_once "./managers/dbm.php";
             <?php }
             } ?>
         </div>
+        <div class="d-flex align-items-center gap-1 alert p-1 mt-1 alert-warning"><i class="fa-solid fa-triangle-exclamation"></i> Listing by latest action date</div>
     </div>
 
 
@@ -185,24 +186,21 @@ require_once "./managers/dbm.php";
     <div class="container my-5" id="services">
         <h2 class="text-center mb-4">Services</h2>
         <div class="row row-cols-1 row-cols-md-5 g-3 service-container">
-            <div class="col">
-                <div class="card h-100">
-                    <img src="https://cdn-icons-png.flaticon.com/512/3067/3067451.png" class="card-img-top img-fluid" alt="Service 1">
-                    <div class="card-body">
-                        <h5 class="card-title">Service Title 1</h5>
-                        <p class="card-text">Service Description 1</p>
+            <?php
+            $getServices = GetStoreServices($store["id"]);
+            foreach ($getServices as $key => $value) {
+            ?>
+                <div class="col">
+                    <div class="card h-100">
+                        <img src="<?= isset($value["image"]) ? 'data:image/png;base64,' . base64_encode($value["image"]) :
+                                        "https://cdn-icons-png.flaticon.com/512/780/780528.png" ?>" class="card-img-top img-fluid" alt="Service 1">
+                        <div class="card-body">
+                            <h5 class="card-title"><?= htmlspecialchars($value["name"]) ?></h5>
+                            <p class="card-text"><?= htmlspecialchars($value["descr"]) ?></p>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col">
-                <div class="card h-100">
-                    <img class="h-100" src="https://img.freepik.com/free-photo/laptop-spectacle-yellow-coffee-mug-diary-table-with-black-textured-wall_23-2147956645.jpg?t=st=1718714544~exp=1718718144~hmac=fb5f12c4a1fe84df834c592440ad9ce109bd7570c1b7193c7e0199a419dd2881&w=1380" class="card-img-top img-fluid" alt="Service 2">
-                    <div class="card-body">
-                        <h5 class="card-title">Service Title 2</h5>
-                        <p class="card-text">Service Description 2</p>
-                    </div>
-                </div>
-            </div>
+            <?php } ?>
         </div>
     </div>
     <!-- About Us -->

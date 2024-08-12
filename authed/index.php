@@ -32,7 +32,7 @@ if (isset($_GET["logout"])) {
             top: 0;
             left: 0;
             width: 250px;
-            background-color: #212529;
+            background-color: #151515;
             padding-top: 1rem;
             display: flex;
             flex-direction: column;
@@ -161,6 +161,11 @@ if (isset($_GET["logout"])) {
         <a href="?p=news"><i class="fas fa-newspaper"></i> News</a>
         <a href="?p=messages"><i class="fas fa-message"></i> Messages</a>
         <a href="./yourstore/"><i class="fas fa-store"></i> Your Store</a>
+        
+        <label style="color:#adb5bd;">Quick Access</label>
+        <a href="./yourstore/?p=addcustomer"><i class="fas fa-users"></i> Add Customer</a>
+        <a href="./yourstore/products/" target="_blank"><i class="fas fa-cubes"></i> Products</a>
+        
         <hr class="w-75 mt-1 mb-1">
         <a target="_blank" href="../faq.php"><i class="fas fa-question"></i> FAQ</a>
     </div>

@@ -263,11 +263,15 @@ function GetStoreServices($storeId)
 
 function AddStoreService($storeId, $serviceName, $servDescr, $servImg = null)
 {
+    $servImg = empty($servImg) ? null : $servImg;
+    if (isset($servImg)) {
+        $servImg = file_get_contents($servImg);
+    }
     return runQuery("insert into store_services (store,name,descr,image) values (?,?,?,?)", [$storeId, $serviceName, $servDescr, $servImg]);
 }
-function RemoveStoreService($storeId,$serviceId)
+function RemoveStoreService($storeId, $serviceId)
 {
-    return runQuery("delete from store_services where store = ? and id = ?", [$storeId,$serviceId]);
+    return runQuery("delete from store_services where store = ? and id = ?", [$storeId, $serviceId]);
 }
 #endregion
 
@@ -335,7 +339,7 @@ function RemoveMessage($messageId)
 #region Actions
 function GetActions($storeId)
 {
-    return runQuery("select id,status,issue,lastUpdate  from customers where store=? and active=1 order by lastUpdate desc", [$storeId], single: false);
+    return runQuery("select id,status,lastUpdate  from customers where store=? and active=1 order by lastUpdate desc", [$storeId], single: false);
 }
 #endregion
 ?>
@@ -346,7 +350,7 @@ function GetActions($storeId)
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 <?php
-function Toastify($text,$stateColor="green")
+function Toastify($text, $stateColor = "green")
 {
     echo '<script>Toastify({
         text: "' . $text . '",
@@ -356,7 +360,7 @@ function Toastify($text,$stateColor="green")
         position: "center",
         style: {
           background: "#151515",
-          borderRight:"0.5rem solid '.$stateColor.'",
+          borderRight:"0.5rem solid ' . $stateColor . '",
           boxShadow:"none"
         },
       }).showToast();

@@ -65,12 +65,14 @@ if ($carouselCount < $maxCarousels) { ?>
                 function onProfileImageSelected() {
                     var pfpfile = document.getElementById("pfpslct");
                     var pfpimg = document.getElementById("selectedImage");
-                    if (pfpfile.files[0]) {
+                    if (pfpfile.files[0] && pfpfile.files[0].size < (5 * 1024 * 1024)) {
                         var reader = new FileReader();
                         reader.onload = function(e) {
                             pfpimg.style.backgroundImage = "url('" + e.target.result + "')";
                         }
                         reader.readAsDataURL(pfpfile.files[0]);
+                    } else {
+                        alert("image out of bound (5mb)");
                     }
                 }
             </script>

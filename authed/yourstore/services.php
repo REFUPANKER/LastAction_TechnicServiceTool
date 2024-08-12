@@ -15,7 +15,7 @@ $servs = GetStoreServices($store["id"]);
 $servlimit = 10;
 
 if (isset($_POST["AddStore"]) && count($servs) < $servlimit) {
-    AddStoreService($store["id"], $_POST["ServiceName"], $_POST["ServiceDescription"]);
+    AddStoreService($store["id"], $_POST["ServiceName"], $_POST["ServiceDescription"], $_FILES["ServiceLogo"]["tmp_name"]);
     $servs = GetStoreServices($store["id"]);
     Toastify("Service added successfully");
 }
@@ -93,11 +93,12 @@ if (isset($_POST["AddStore"]) && count($servs) < $servlimit) {
                 <?php
             } else {
                 foreach ($servs as $key => $value) { ?>
-                    <div class="d-flex align-items-center m-1 rounded rounded-3 " style="height:6vw;">
-                        <img src="<?= isset($value["image"]) ? $value["image"] : "https://cdn-icons-png.flaticon.com/512/780/780528.png" ?>" class="rounded rounded-3 overflow-hidden p-2" style="width:6vw;aspect-ratio: 1;">
+                    <div class="d-flex align-items-center m-1 rounded rounded-3 gap-3" style="height:6vw;">
+                        <img src="<?= isset($value["image"]) ? 'data:image/png;base64,' . base64_encode($value["image"]) :
+                                        "https://cdn-icons-png.flaticon.com/512/780/780528.png" ?>" class="rounded rounded-3 overflow-hidden" style="width:6vw;aspect-ratio: 1;">
                         <div class="d-flex flex-column w-100 overflow-auto">
-                            <h5> <?= $value["name"] ?></h5>
-                            <h6 class="text-break"><?= $value["descr"] ?></h6>
+                            <h5> <?= htmlspecialchars($value["name"]) ?></h5>
+                            <h6 class="text-break"><?= htmlspecialchars($value["descr"]) ?></h6>
                         </div>
                         <a title="remove" href="?p=services&rmsrv=<?= $value["id"] ?>" style="aspect-ratio: 1;" class="btn btn-outline-danger d-flex align-items-center "><i class="fas fa-trash"></i></a>
                     </div>
@@ -112,12 +113,21 @@ if (isset($_POST["AddStore"]) && count($servs) < $servlimit) {
         <?php
         if (count($servs) < $servlimit) {
         ?>
-            <form method="post" class="d-flex flex-column gap-2">
+            <form method="post" enctype="multipart/form-data" class="d-flex flex-column gap-2">
                 <h3>Add Service</h3>
-                Name
-                <input class="form-control" maxlength="64" name="ServiceName" required>
-                Description
-                <textarea class="form-control" maxlength="512" name="ServiceDescription" required></textarea>
+                <div class="d-flex justify-items-center align-items-center">
+                    <div class="w-50">
+                        Name
+                        <input class="form-control" maxlength="64" name="ServiceName" required>
+                        Description
+                        <textarea class="form-control" maxlength="512" name="ServiceDescription" required></textarea>
+                    </div>
+                    <div class="w-50 align-items-center d-flex flex-column">
+                        Select Image
+                        <input id="ServiceLogo" onchange="OnServiceLogoSelected()" class="d-none w-100" type="file" name="ServiceLogo" title="select file" accept="image/jpeg, image/png">
+                        <label for="ServiceLogo" id="selectedImage" title="Selected image" style="height:15vw;aspect-ratio: 1;cursor:pointer;border:0.2vmax solid white;background-color: rgba(255,255,255,0.3);border-radius: 0.5vmax;background-repeat:no-repeat;background-size:contain;background-position: center;background-image:url('https://via.placeholder.com/500x500');"></label>
+                    </div>
+                </div>
                 <button name="AddStore" value="1" class="btn btn-success">Add</button>
             </form>
         <?php
@@ -134,6 +144,20 @@ if (isset($_POST["AddStore"]) && count($servs) < $servlimit) {
 </div>
 
 <script>
+    function OnServiceLogoSelected() {
+        var pfpfile = document.getElementById("ServiceLogo");
+        var pfpimg = document.getElementById("selectedImage");
+        if (pfpfile.files[0] && pfpfile.files[0].size < (5 * 1024 * 1024)) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                pfpimg.style.backgroundImage = "url('" + e.target.result + "')";
+            }
+            reader.readAsDataURL(pfpfile.files[0]);
+        } else {
+            alert("image out of bound (5mb)");
+        }
+    }
+
     let preTabEvt;
 
     function openTab(evt, tabname) {
