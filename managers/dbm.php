@@ -238,9 +238,9 @@ function GetStoreCarouselCount($storeId)
     return runQuery("select count(*) as count from store_carousel where store = ?", [$storeId]);
 }
 
-function RemoveStoreCarousel($carouselId)
+function RemoveStoreCarousel($carouselId,$storeId)
 {
-    runQuery("delete from store_carousel where id = ?", [$carouselId]);
+    runQuery("delete from store_carousel where id = ? and store = ?", [$carouselId,$storeId]);
 }
 
 function AddStoreCarousel($storeId, $image, $title, $content)
@@ -254,6 +254,7 @@ function AddStoreCarousel($storeId, $image, $title, $content)
 }
 
 #endregion
+
 
 #region Services
 function GetStoreServices($storeId)
@@ -280,7 +281,7 @@ function RemoveStoreService($storeId, $serviceId)
 
 function AddCustomer($name, $storeId, $issue, $contact)
 {
-    runQuery("insert into customers (name,store,issue,contact) values (?,?,?,?)", [$name, $storeId, $issue, $contact]);
+    return runQuery("insert into customers (name,store,issue,contact) values (?,?,?,?)", [$name, $storeId, $issue, $contact],returnId:true);
 }
 
 function GetCustomers()
@@ -339,7 +340,7 @@ function RemoveMessage($messageId)
 #region Actions
 function GetActions($storeId)
 {
-    return runQuery("select id,status,lastUpdate  from customers where store=? and active=1 order by lastUpdate desc", [$storeId], single: false);
+    return runQuery("select id,status,lastUpdate  from customers where store=? and active=1 order by lastUpdate desc limit 10", [$storeId], single: false);
 }
 #endregion
 ?>

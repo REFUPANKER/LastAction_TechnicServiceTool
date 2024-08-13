@@ -14,14 +14,15 @@ if (!isset($store)) {
     return;
 }
 
+if (isset($_GET["rmc"])) {
+    RemoveStoreCarousel($_GET["rmc"],$store["id"]);
+}
+
 $carousels = GetStoreCarousel($store["id"]);
 $carouselCount = count($carousels);
-if (isset($_POST["removeCarousel"])) {
-    RemoveStoreCarousel($_POST["removeCarousel"]);
-    header("refresh:0;");
-}
+
 if ($carouselCount > 0) { ?>
-    <div class="d-flex flex-wrap overflow-auto gap-2 m-3" >
+    <div class="d-flex flex-wrap overflow-auto gap-2 m-3">
         <?php foreach ($carousels as $key => $value) { ?>
             <div class="d-flex flex-column gap-2 w-25 p-2 bg-dark rounded rounded-3">
                 <img class="align-self-center" src="data:image/png;base64,<?= base64_encode($value["image"]) ?>" style="width:100%;aspect-ratio: 2/1;object-fit:100% 100%;">
@@ -29,13 +30,11 @@ if ($carouselCount > 0) { ?>
                     <h5 class="m-0"><?= htmlspecialchars($value["title"]) ?></h5>
                     <p><?= htmlspecialchars($value["content"]) ?></p>
                 </div>
-                <form class="w-100" method="post">
-                    <button name="removeCarousel" value="<?= $value["id"] ?>" class="btn btn-outline-danger w-100">Delete</button>
-                </form>
+                <a href="?p=removecarousel&rmc=<?= $value["id"] ?>" class="btn btn-outline-danger w-100">Delete</a>
             </div>
         <?php } ?>
     </div>
 <?php unset($carousels);
-}else{?>
-<div class='alert alert-warning'>No carousel images existing.</div>
+} else { ?>
+    <div class='alert alert-warning'>No carousel images existing.</div>
 <?php }

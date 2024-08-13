@@ -19,12 +19,9 @@ if (isset($_GET["logout"])) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="../resources/styles/colorics.css" rel="stylesheet">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #343a40;
-            color: #fff;
-        }
+        
 
         .sidebar {
             height: 100vh;
@@ -171,7 +168,7 @@ if (isset($_GET["logout"])) {
     </div>
 
     <div class="content">
-        <div class="container">
+        <div>
             <?php
             if (isset($_GET["p"]) && !str_contains($_GET["p"], "/") && !str_contains($_GET["p"], ".") && file_exists($_GET["p"] . ".php")) {
                 include_once($_GET["p"] . ".php");

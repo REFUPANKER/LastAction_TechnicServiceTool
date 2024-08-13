@@ -324,7 +324,7 @@ $store = GetStoreByUserId($_SESSION["user"]);
                                     <h5>Change Logo</h5>
                                     <?php
                                     // UPDATE STORE LOGO
-                                    $MaxLogoUpdateTime = 10 * 60;
+                                    $MaxLogoUpdateTime = 60 * 60;
                                     if (isset($_POST["update_logo"])) {
                                         if (isset($_FILES["update_logo"]) && file_exists($_FILES["update_logo"]["tmp_name"])) {
                                             UpdateStoreLogo($_FILES["update_logo"]["tmp_name"]);

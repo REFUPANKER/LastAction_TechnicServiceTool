@@ -4,12 +4,6 @@ if (!isset($_SESSION["user"])) {
 }
 ?>
 <style>
-    .news {
-        background-color: #343a40;
-        color: white;
-        font-family: Arial, sans-serif;
-        margin: 1vw;
-    }
 
     .news .news-container {
         min-height: 60vh;
@@ -39,12 +33,12 @@ if (!isset($_SESSION["user"])) {
             ?>
                 <div class="accordion-item news-item">
                     <h2 class="accordion-header" id="heading<?= $i ?>">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<?= $i ?>" aria-expanded="false" aria-controls="collapse<?= $i ?>">
+                        <button class="accordion-button collapsed bgc-darkgray" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<?= $i ?>" aria-expanded="false" aria-controls="collapse<?= $i ?>">
                             <?= $gnews[$i]["title"] ?>
                         </button>
                     </h2>
-                    <div id="collapse<?= $i ?>" class="accordion-collapse collapse" aria-labelledby="heading<?= $i ?>" data-bs-parent="#newsAccordion">
-                        <div class="accordion-body text-break">
+                    <div id="collapse<?= $i ?>" class="accordion-collapse collapse bgc-gray" aria-labelledby="heading<?= $i ?>" data-bs-parent="#newsAccordion">
+                        <div class="accordion-body text-break ">
                             <?= $gnews[$i]["content"] ?>
                             <hr class="mt-1 mb-1">
                             <h6><?= $gnews[$i]["date"] ?></h6>

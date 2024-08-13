@@ -11,9 +11,12 @@ $customers = GetCustomers();
     <h1 class="text-center">Add Customer</h1>
     <?php
     if (isset($_POST["add_customer"])) {
-        AddCustomer($_POST["name"], $store["id"], $_POST["issue"], $_POST["contact"]);
-        echo "<div class='alert alert-success'>Customer added.Refreshing page in 3 seconds</div>";
-        header("refresh:3;?p=addcustomer");
+        $orderId = AddCustomer($_POST["name"], $store["id"], $_POST["issue"], $_POST["contact"]); ?>
+        <div class="alert alert-success">Customer added.<a href="?p=addcustomer"><b>Refresh</b></a>ing page in 10 seconds</div>
+        <h4>Order Number : <?=$orderId?></h4>
+        
+    <?php
+        header("refresh:10;?p=addcustomer");
         return;
     }
     ?>
