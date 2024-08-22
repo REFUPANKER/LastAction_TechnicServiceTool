@@ -1,4 +1,4 @@
-<FilesMatch "(.gitattributes|readme.md)$">
+<FilesMatch "(.gitattributes|readme.md|todo)$">
   Order Allow,Deny
   Deny from all
 </FilesMatch>

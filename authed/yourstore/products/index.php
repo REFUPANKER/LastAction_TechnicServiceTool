@@ -13,18 +13,18 @@
 
 <body style="height:100vh;" class="overflow-auto bgc-black text-white d-flex flex-column align-items-center align-content-center justify-content-center ">
     <?php
-    require_once("../../../managers/dbm.php");
-    if (!isset($_SESSION["user"])) {
-        header("location:../../../auth.php");
-    }
+    // require_once("../../../managers/dbm.php");
+    // if (!isset($_SESSION["user"])) {
+    //     header("location:../../../auth.php");
+    // }
 
-    $store = GetStoreByUserId($_SESSION["user"]);
+    // $store = GetStoreByUserId($_SESSION["user"]);
 
-    if (!isset($store)) {
-        echo "<div class='alert alert-danger'>No Store existing. Redirecting in 3 seconds</div>";
-        header("refresh:3;../");
-        return;
-    }
+    // if (!isset($store)) {
+    //     echo "<div class='alert alert-danger'>No Store existing. Redirecting in 3 seconds</div>";
+    //     header("refresh:3;../");
+    //     return;
+    // }
     ?>
     <a href="../" class="d-flex align-items-center text-white gap-2 fs-2 text-decoration-none" style="cursor:pointer;">
         <i class="fa-solid fa-house"></i>

@@ -1,0 +1,4 @@
+<File "actions.php">
+    order deny,allow
+    deny from all
+</File>
