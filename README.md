@@ -5,4 +5,6 @@
  made with php 
  
  # Hosted project!!! (♾️free)
-[LastAction](lastaction.000.pe)
+ 
+ 
+ <a href="http:/lastaction.000.pe" target="_blank">LastAction</a>
