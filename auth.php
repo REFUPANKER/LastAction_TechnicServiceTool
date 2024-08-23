@@ -16,11 +16,13 @@ if (isset($_SESSION["user"])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Last Action - Auth</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="./resources/styles/colorics.css" rel="stylesheet">
     <style>
         body {
             background-color: #343a40;
             color: white;
             font-family: Arial, sans-serif;
+            height: 100vh;
         }
 
         .container {
@@ -48,10 +50,10 @@ if (isset($_SESSION["user"])) {
     </style>
 </head>
 
-<body>
+<body class="bgc-darkgray d-flex flex-column">
     <a href="./" class="home-link"><img src="https://cdn-icons-png.flaticon.com/512/1946/1946436.png" alt="Home"></a>
 
-    <div class="container">
+    <div class="container h-100">
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <?php
@@ -142,9 +144,13 @@ if (isset($_SESSION["user"])) {
                     </div>
                 <?php }
                 ?>
-
             </div>
         </div>
+    </div>
+    <div class="mb-5 d-flex justify-content-center gap-1">
+        <i class="text-center">If you having issues <a href="https://github.com/REFUPANKER" target="_blank">Contact us</a></i>
+        |
+        <i><a href="./faq.php">FAQ</a></i>
     </div>
 </body>
 

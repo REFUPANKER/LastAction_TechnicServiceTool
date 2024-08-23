@@ -18,9 +18,8 @@ if (isset($_GET["openStore"])) {
     header("location:./");
 }
 
-
+$userData = GetUserById($_SESSION["user"]);
 $store = GetStoreByUserId($_SESSION["user"]);
-
 ?>
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
@@ -43,32 +42,10 @@ $store = GetStoreByUserId($_SESSION["user"]);
             padding-top: 1rem;
             display: flex;
             flex-direction: column;
+            justify-content: space-between;
             align-items: center;
             transition: transform 0.3s ease;
             border-right: 0.1rem #303030 solid;
-        }
-
-        .sidebar .user-info {
-            text-align: center;
-            margin-bottom: 1rem;
-        }
-
-        .sidebar .user-info img {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            margin-bottom: 0.5rem;
-        }
-
-        .sidebar .user-info h5 {
-            margin-bottom: 0.5rem;
-        }
-
-        .sidebar .user-info .btn-group {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            width: 100%;
         }
 
         .sidebar .btn {
@@ -152,26 +129,30 @@ $store = GetStoreByUserId($_SESSION["user"]);
     </button>
 
     <div class="sidebar" id="sidebar">
-        <div class="user-info">
-            <h1 class="w-100 text-center">Your Store</h1>
-            <img src="https://via.placeholder.com/80" alt="Profile Picture">
-            <?php $userData = GetUserById($_SESSION["user"]); ?>
-            <h5 title="id:<?= $userData["id"] ?> | Account <?= $userData["active"] ? "active" : "disabled" ?> | <?= $userData["email"] ?>">
-                <?= htmlspecialchars($userData["name"]) ?>
-            </h5>
-            <div class="btn-group ">
-                <a href="?logout=1" class="btn btn-danger btn-sm text-white p-2 ">
-                    <i class="fas fa-sign-out-alt"></i>
-                    <span>Logout</span>
-                </a>
+        <h3 class="w-100 text-center">Your Store</h3>
+        <div class="d-flex flex-column w-75 gap-1">
+            <div class="d-flex gap-1">
+                <img
+                    src="https://via.placeholder.com/80"
+                    class="rounded rounded-3"
+                    alt="Profile Picture"
+                    title="id:<?= $userData["id"] ?>">
+                <div class="d-flex flex-column justify-content-between">
+                    <h5><?= htmlspecialchars($userData["name"]) ?></h5>
+                    <h5 class="btn btn-<?=$userData["active"]?"success":"danger"?> m-0"><?= $userData["active"] ? "Active" : "Disabled" ?></h5>
+                </div>
             </div>
+            <a href="?logout=1" class="btn btn-danger text-white p-2 ">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </a>
         </div>
         <a href="../"><i class="fas fa-chevron-left"></i> Account</a>
         <h5 class="mb-0">Management</h5>
         <a href="."><i class="fas fa-home"></i> Home</a>
         <a href="./products/" target="_blank"><i class="fas fa-cubes"></i> Products</a>
-        <div class="dropdown w-100 ps-2">
-            <a class="dropdown-toggle p-2" style="cursor: pointer;" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-users me-1"></i>Customers</a>
+        <div class="dropdown w-100">
+            <a class="dropdown-toggle ps-3" style="cursor: pointer;" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-users me-1"></i>Customers</a>
             <div class="dropdown-menu w-100 ms-3 border" aria-labelledby="dropdownMenuButton">
                 <a href="?p=listcustomers"><i class="fas fa-list"></i> List</a>
                 <a href="?p=addcustomer"><i class="fas fa-plus"></i> Add</a>
@@ -179,8 +160,8 @@ $store = GetStoreByUserId($_SESSION["user"]);
             </div>
         </div>
         <h5 class="mb-0">Properties</h5>
-        <div class="dropdown w-100 ps-2">
-            <a class="dropdown-toggle p-2" style="cursor: pointer;" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-film me-1"></i>Carousel</a>
+        <div class="dropdown w-100">
+            <a class="dropdown-toggle ps-3" style="cursor: pointer;" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-film me-1"></i>Carousel</a>
             <div class="dropdown-menu w-100 ms-3 border" aria-labelledby="dropdownMenuButton">
                 <a href="?p=addcarousel"><i class="fas fa-plus"></i> Add Image</a>
                 <a href="?p=removecarousel"><i class="fas fa-trash"></i> Remove Images</a>

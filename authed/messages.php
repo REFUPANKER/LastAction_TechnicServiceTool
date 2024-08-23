@@ -1,7 +1,5 @@
 <?php
-if (!isset($_SESSION["user"])) {
-    header("location:../auth.php");
-}
+include_once("../managers/innerPageChecker.php");
 ?>
 <h1 class="text-center m-0">Messages</h1>
 

@@ -134,6 +134,7 @@ function LogoutUser()
 {
     unset($_SESSION["user"]);
     header("location:./");
+    exit;
 }
 
 function GetUserById($id)
@@ -251,6 +252,7 @@ function AddStoreCarousel($storeId, $image, $title, $content)
         [$storeId, $image, $title, $content]
     );
     header("refresh:2");
+    exit;
 }
 
 #endregion

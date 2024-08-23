@@ -3,11 +3,15 @@ require_once "../managers/dbm.php";
 
 if (!isset($_SESSION["user"])) {
     header("location:../auth.php");
+    exit;
 }
 
 if (isset($_GET["logout"])) {
     LogoutUser();
 }
+
+$userData = GetUserById($_SESSION["user"]);
+
 ?>
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
@@ -21,8 +25,6 @@ if (isset($_GET["logout"])) {
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="../resources/styles/colorics.css" rel="stylesheet">
     <style>
-        
-
         .sidebar {
             height: 100vh;
             position: fixed;
@@ -33,31 +35,9 @@ if (isset($_GET["logout"])) {
             padding-top: 1rem;
             display: flex;
             flex-direction: column;
+            justify-content: space-between;
             align-items: center;
             transition: transform 0.3s ease;
-        }
-
-        .sidebar .user-info {
-            text-align: center;
-            margin-bottom: 1rem;
-        }
-
-        .sidebar .user-info img {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            margin-bottom: 0.5rem;
-        }
-
-        .sidebar .user-info h5 {
-            margin-bottom: 0.5rem;
-        }
-
-        .sidebar .user-info .btn-group {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            width: 100%;
         }
 
         .sidebar .btn {
@@ -137,32 +117,35 @@ if (isset($_GET["logout"])) {
     <button class="menu-toggle" onclick="toggleSidebar()">
         <i class="fas fa-bars"></i>
     </button>
-
     <div class="sidebar" id="sidebar">
-        <div class="user-info">
-            <img src="https://via.placeholder.com/80" alt="Profile Picture">
-            <?php $userData = GetUserById($_SESSION["user"])
-            ?>
-            <h5 title="id:<?= $userData["id"] ?> | Account <?= $userData["active"] ? "active" : "disabled" ?> | <?= $userData["email"] ?>">
-                <?= $userData["name"] ?>
-            </h5>
-            <div class="btn-group">
-                <a href="?logout=1" class="btn btn-danger btn-sm">
-                    <i class="fas fa-sign-out-alt"></i>
-                    <span>Logout</span>
-                </a>
+        <h3 class="w-100 text-center">Your Account</h3>
+        <div class="d-flex flex-column w-75 gap-1">
+            <div class="d-flex gap-1">
+                <img
+                    src="https://via.placeholder.com/80"
+                    class="rounded rounded-3"
+                    alt="Profile Picture"
+                    title="id:<?= $userData["id"] ?>">
+                <div class="d-flex flex-column justify-content-between">
+                    <h5><?= htmlspecialchars($userData["name"]) ?></h5>
+                    <h5 class="btn btn-<?= $userData["active"] ? "success" : "danger" ?> m-0"><?= $userData["active"] ? "Active" : "Disabled" ?></h5>
+                </div>
             </div>
+            <a href="?logout=1" class="btn btn-danger text-white p-2 ">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </a>
         </div>
         <a href="."><i class="fas fa-home"></i> Home</a>
         <a href="?p=profile"><i class="fas fa-user"></i> Profile</a>
         <a href="?p=news"><i class="fas fa-newspaper"></i> News</a>
         <a href="?p=messages"><i class="fas fa-message"></i> Messages</a>
         <a href="./yourstore/"><i class="fas fa-store"></i> Your Store</a>
-        
+
         <label style="color:#adb5bd;">Quick Access</label>
         <a href="./yourstore/?p=addcustomer"><i class="fas fa-users"></i> Add Customer</a>
         <a href="./yourstore/products/" target="_blank"><i class="fas fa-cubes"></i> Products</a>
-        
+
         <hr class="w-75 mt-1 mb-1">
         <a target="_blank" href="../faq.php"><i class="fas fa-question"></i> FAQ</a>
     </div>
