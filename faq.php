@@ -10,7 +10,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <style>
         body {
-            background-color: #343a40;
+            background-color: #101010;
             color: white;
             font-family: Arial, sans-serif;
             margin: 3vw;
@@ -35,11 +35,14 @@
         .form-container {
             margin-top: 20px;
             padding: 20px;
-            background-color: #495057;
+            background-color: #303030;
             border-radius: 10px;
             min-width: 50%;
             margin-left: auto;
             margin-right: auto;
+        }
+        .form-container button {
+            border: 0.03rem solid #606060;
         }
 
         textarea {

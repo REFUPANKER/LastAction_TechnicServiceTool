@@ -28,28 +28,20 @@ if ($carouselCount < $maxCarousels) { ?>
         if ($canAddCarousel && isset($_POST["addcarousel"]) && isset($_FILES["carousel_image"])) {
             $file = $_FILES["carousel_image"];
             $allowedTypes = array("image/jpeg", "image/png");
-            $addCarouselMSG;
-            $carouselMsgType;
             if (!in_array($file["type"], $allowedTypes)) {
-                $addCarouselMSG = "only JPEG and PNG allowed";
-                $carouselMsgType = "warning";
+                Toastify("only JPEG and PNG allowed", "yellow");
             } else {
                 $maxFileSize = $sizeLimit * 1024 * 1024;
                 if ($file["size"] > $maxFileSize) {
-                    $addCarouselMSG = "file size over the limit <i>" . $sizeLimit . "mb</i>";
-                    $carouselMsgType = "danger";
+                    Toastify("file size over the limit " . $sizeLimit . "mb", "red");
                     unset($_FILES["carousel_image"]);
                 } else {
                     AddStoreCarousel($store["id"], $file["tmp_name"], $_POST["carousel_title"], $_POST["carousel_content"]);
+                    Toastify("Carousel image added (refreshing page in 2 sec)");
                     $canAddCarousel = false;
-                    $addCarouselMSG = "Carousel image added (refreshing page in 2 sec)";
-                    $carouselMsgType = "success";
                 }
             }
         }
-        if (isset($addCarouselMSG)) { ?>
-            <div class="w-50 alert alert-<?= $carouselMsgType ?>"><?= $addCarouselMSG ?></div>
-        <?php }
         if ($canAddCarousel) { ?>
             <form method="post" enctype="multipart/form-data" class="d-flex carouselblock align-items-center justify-content-center gap-3 w-100">
                 <div class="d-flex flex-column">

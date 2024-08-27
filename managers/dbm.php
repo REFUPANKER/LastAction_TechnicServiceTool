@@ -33,7 +33,8 @@ $statusColor = ["#e0501b", "#abc720", "#20c723", "#353535"];
 function runQuery($qstr, $params = [], $single = true, $returnId = false)
 {
     $con = mysqli_connect("localhost", "root", "", "LastAction");
-    $con->set_charset("utf8");
+    //$con = mysqli_connect("sql110.infinityfree.com", "if0_37155820", "HBMQqUnWYIxsc", "if0_37155820_LastAction");
+    $con->set_charset("utf8mb4_unicode_ci");
     if ($con->connect_error) {
         die("Connection failed" . $con->connect_error);
     }
@@ -251,8 +252,6 @@ function AddStoreCarousel($storeId, $image, $title, $content)
         "insert into store_carousel (store,image,title,content) values(?,?,?,?)",
         [$storeId, $image, $title, $content]
     );
-    header("refresh:2");
-    exit;
 }
 
 #endregion
